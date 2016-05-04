@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Random;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -78,10 +79,9 @@ public class PersonResource {
 	}
 
 	// ******************* PERSON ***********************
-	
+
 	/**
-	 * GET /business-service/person 
-	 * This method calls a getPersonList method in
+	 * GET /business-service/person This method calls a getPersonList method in
 	 * Storage Services Module
 	 * 
 	 * @return
@@ -111,95 +111,84 @@ public class PersonResource {
 			JSONObject obj = new JSONObject(result.toString());
 
 			if (response.getStatusLine().getStatusCode() == 200) {
-				
+
 				return Response.ok(obj.toString()).build();
-				
-/*				// people object json
-				xmlResponse = "<people>";
 
-				JSONArray arr = (JSONArray) obj.getJSONArray("person");
-
-				for (int i = 0; i < arr.length(); i++) {
-
-					// person array json
-					xmlResponse += "<person>";
-
-					xmlResponse += "<pid>" + arr.getJSONObject(i).get("pid")
-							+ "</pid>";
-					xmlResponse += "<firstname>"
-							+ arr.getJSONObject(i).get("firstname")
-							+ "</firstname>";
-					xmlResponse += "<lastname>"
-							+ arr.getJSONObject(i).get("lastname")
-							+ "</lastname>";
-					xmlResponse += "<birthdate>"
-							+ arr.getJSONObject(i).get("birthdate")
-							+ "</birthdate>";
-					xmlResponse += "<email>"
-							+ arr.getJSONObject(i).get("email") + "</email>";
-					xmlResponse += "<gender>"
-							+ arr.getJSONObject(i).get("gender") + "</gender>";
-
-					
-					 * xmlResponse += "<currentHealth>"; JSONObject currentObj =
-					 * (JSONObject)
-					 * arr.getJSONObject(i).getJSONObject("currentHealth");
-					 * JSONArray measureArr =
-					 * currentObj.getJSONArray("measure"); for(int j=0;
-					 * j<measureArr.length(); j++){
-					 * 
-					 * //measure array json xmlResponse += "<measure>";
-					 * 
-					 * xmlResponse += "<mid>" +
-					 * measureArr.getJSONObject(j).get("mid") + "</mid>";
-					 * xmlResponse += "<name>" +
-					 * measureArr.getJSONObject(j).get("name") + "</name>";
-					 * xmlResponse += "<value>" +
-					 * measureArr.getJSONObject(j).get("value") + "</value>";
-					 * xmlResponse += "<created>" +
-					 * measureArr.getJSONObject(j).get("created") +
-					 * "</created>";
-					 * 
-					 * xmlResponse += "</measure>"; } xmlResponse +=
-					 * "</currentHealth>";
-					 
-
-					
-					 * xmlResponse += "<goals>"; JSONObject goalsObj =
-					 * (JSONObject) arr.getJSONObject(i).getJSONObject("goals");
-					 * JSONArray goalArr = goalsObj.getJSONArray("goal");
-					 * 
-					 * for(int k=0; k<goalArr.length(); k++){
-					 * 
-					 * //goal array json xmlResponse += "<goal>";
-					 * 
-					 * xmlResponse += "<gid>" +
-					 * goalArr.getJSONObject(k).get("gid") + "</gid>";
-					 * xmlResponse += "<type>" +
-					 * goalArr.getJSONObject(k).get("type") + "</type>";
-					 * xmlResponse += "<value>" +
-					 * goalArr.getJSONObject(k).get("value") + "</value>";
-					 * xmlResponse += "<startDateGoal>" +
-					 * goalArr.getJSONObject(k).get("startDateGoal") +
-					 * "</startDateGoal>"; xmlResponse += "<endDateGoal>" +
-					 * goalArr.getJSONObject(k).get("endDateGoal") +
-					 * "</endDateGoal>"; xmlResponse += "<achieved>" +
-					 * goalArr.getJSONObject(k).get("achieved") + "</achieved>";
-					 * 
-					 * xmlResponse += "</goal>"; } xmlResponse += "</goals>";
-					 
-
-					xmlResponse += "</person>";
-				}
-
-				xmlResponse += "</people>";
-
-				System.out.println(prettyXMLPrint(xmlResponse));
-
-				JSONObject xmlJSONObj = XML.toJSONObject(xmlResponse);
-				String jsonPrettyPrintString = xmlJSONObj.toString(4);
-				return Response.ok(jsonPrettyPrintString).build();
-				*/
+				/*
+				 * // people object json xmlResponse = "<people>";
+				 * 
+				 * JSONArray arr = (JSONArray) obj.getJSONArray("person");
+				 * 
+				 * for (int i = 0; i < arr.length(); i++) {
+				 * 
+				 * // person array json xmlResponse += "<person>";
+				 * 
+				 * xmlResponse += "<pid>" + arr.getJSONObject(i).get("pid") +
+				 * "</pid>"; xmlResponse += "<firstname>" +
+				 * arr.getJSONObject(i).get("firstname") + "</firstname>";
+				 * xmlResponse += "<lastname>" +
+				 * arr.getJSONObject(i).get("lastname") + "</lastname>";
+				 * xmlResponse += "<birthdate>" +
+				 * arr.getJSONObject(i).get("birthdate") + "</birthdate>";
+				 * xmlResponse += "<email>" + arr.getJSONObject(i).get("email")
+				 * + "</email>"; xmlResponse += "<gender>" +
+				 * arr.getJSONObject(i).get("gender") + "</gender>";
+				 * 
+				 * 
+				 * xmlResponse += "<currentHealth>"; JSONObject currentObj =
+				 * (JSONObject)
+				 * arr.getJSONObject(i).getJSONObject("currentHealth");
+				 * JSONArray measureArr = currentObj.getJSONArray("measure");
+				 * for(int j=0; j<measureArr.length(); j++){
+				 * 
+				 * //measure array json xmlResponse += "<measure>";
+				 * 
+				 * xmlResponse += "<mid>" +
+				 * measureArr.getJSONObject(j).get("mid") + "</mid>";
+				 * xmlResponse += "<name>" +
+				 * measureArr.getJSONObject(j).get("name") + "</name>";
+				 * xmlResponse += "<value>" +
+				 * measureArr.getJSONObject(j).get("value") + "</value>";
+				 * xmlResponse += "<created>" +
+				 * measureArr.getJSONObject(j).get("created") + "</created>";
+				 * 
+				 * xmlResponse += "</measure>"; } xmlResponse +=
+				 * "</currentHealth>";
+				 * 
+				 * 
+				 * 
+				 * xmlResponse += "<goals>"; JSONObject goalsObj = (JSONObject)
+				 * arr.getJSONObject(i).getJSONObject("goals"); JSONArray
+				 * goalArr = goalsObj.getJSONArray("goal");
+				 * 
+				 * for(int k=0; k<goalArr.length(); k++){
+				 * 
+				 * //goal array json xmlResponse += "<goal>";
+				 * 
+				 * xmlResponse += "<gid>" + goalArr.getJSONObject(k).get("gid")
+				 * + "</gid>"; xmlResponse += "<type>" +
+				 * goalArr.getJSONObject(k).get("type") + "</type>"; xmlResponse
+				 * += "<value>" + goalArr.getJSONObject(k).get("value") +
+				 * "</value>"; xmlResponse += "<startDateGoal>" +
+				 * goalArr.getJSONObject(k).get("startDateGoal") +
+				 * "</startDateGoal>"; xmlResponse += "<endDateGoal>" +
+				 * goalArr.getJSONObject(k).get("endDateGoal") +
+				 * "</endDateGoal>"; xmlResponse += "<achieved>" +
+				 * goalArr.getJSONObject(k).get("achieved") + "</achieved>";
+				 * 
+				 * xmlResponse += "</goal>"; } xmlResponse += "</goals>";
+				 * 
+				 * 
+				 * xmlResponse += "</person>"; }
+				 * 
+				 * xmlResponse += "</people>";
+				 * 
+				 * System.out.println(prettyXMLPrint(xmlResponse));
+				 * 
+				 * JSONObject xmlJSONObj = XML.toJSONObject(xmlResponse); String
+				 * jsonPrettyPrintString = xmlJSONObj.toString(4); return
+				 * Response.ok(jsonPrettyPrintString).build();
+				 */
 			} else {
 				System.out
 						.println("Storage Service Error response.getStatus() != 200");
@@ -216,60 +205,61 @@ public class PersonResource {
 	}
 
 	/**
-	 * GET /business-service/person/{idPerson}  
-	 * This method calls a getPerson method in
-	 * Storage Services Module
+	 * GET /business-service/person/{idPerson} This method calls a getPerson
+	 * method in Storage Services Module
 	 * 
 	 * @return
 	 */
 	@GET
 	@Path("{pid}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response readPerson(@PathParam("pid") int idPerson){
-    	try{
-    		System.out
-			.println("readPerson: Reading Person with " + idPerson + " from Storage Services Module in Business Logic Services...");
-    		
-    		String path = "/person/" + idPerson;
-        	
-        	DefaultHttpClient client = new DefaultHttpClient();
-        	HttpGet request = new HttpGet(storageServiceURL + path);
-        	HttpResponse response = client.execute(request);
-        	
-        	BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response readPerson(@PathParam("pid") int idPerson) {
+		try {
+			System.out
+					.println("readPerson: Reading Person with "
+							+ idPerson
+							+ " from Storage Services Module in Business Logic Services...");
 
-        	StringBuffer result = new StringBuffer();
-        	String line = "";
-        	while ((line = rd.readLine()) != null) {
-        	    result.append(line);
-        	}
+			String path = "/person/" + idPerson;
 
-        	JSONObject o = new JSONObject(result.toString());
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpGet request = new HttpGet(storageServiceURL + path);
+			HttpResponse response = client.execute(request);
 
-        	if(response.getStatusLine().getStatusCode() == 200){
-                return Response.ok(o.toString()).build();
-        	}else{
-        		System.out
-				.println("Storage Service Error response.getStatus() != 200");
-        		return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-				.entity(externalErrorMessage(response.toString()))
-				.build();
-        		//return Response.status(204).build();
-        	}
-      
-    	}catch(Exception e){
-    		System.out
-			.println("Business Logic Service Error catch response.getStatus() != 200");
-    		return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-			.entity(errorMessage(e)).build();
-    	}
-    	
-    }
-	
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					response.getEntity().getContent()));
+
+			StringBuffer result = new StringBuffer();
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				result.append(line);
+			}
+
+			JSONObject o = new JSONObject(result.toString());
+
+			if (response.getStatusLine().getStatusCode() == 200) {
+				return Response.ok(o.toString()).build();
+			} else {
+				System.out
+						.println("Storage Service Error response.getStatus() != 200");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(externalErrorMessage(response.toString()))
+						.build();
+				// return Response.status(204).build();
+			}
+
+		} catch (Exception e) {
+			System.out
+					.println("Business Logic Service Error catch response.getStatus() != 200");
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(errorMessage(e)).build();
+		}
+
+	}
+
 	/**
-	 * POST /business-service/person 
-	 * This method calls a createPerson method in
+	 * POST /business-service/person This method calls a createPerson method in
 	 * Storage Services Module
 	 * 
 	 * @return
@@ -292,7 +282,7 @@ public class PersonResource {
 			Response response = builder.post(Entity.json(inputPersonJSON));
 
 			String result = response.readEntity(String.class);
-			
+
 			if (response.getStatus() != 201) {
 				System.out
 						.println("Storage Service Error response.getStatus() != 201");
@@ -311,90 +301,92 @@ public class PersonResource {
 	}
 
 	/**
-	 * PUT /business-service/person/{idPerson} 
-	 * This method calls a updatePerson method in
-	 * Storage Services Module
+	 * PUT /business-service/person/{idPerson} This method calls a updatePerson
+	 * method in Storage Services Module
 	 * 
 	 * @return
 	 */
 	@PUT
 	@Path("{pid}")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response updatePerson(@PathParam("pid") int idPerson, String inputPersonJSON){
-    	try{
-    		System.out
-			.println("updatePerson: Updating Person from Storage Services Module in Business Logic Services");
-    		
-    		String path = "/person/" + idPerson;
-    		
-    		Client client = ClientBuilder.newClient();
-    		WebTarget webTarget = client.target(storageServiceURL + path);
-    		Builder builder = webTarget.request(mediaType);
-    		
-    		Response response = builder.put(Entity.json(inputPersonJSON));
-    		
-    		String result = response.readEntity(String.class);
-    		
-    		if (response.getStatus() != 200) {
-    			System.out
-					.println("Storage Service Error response.getStatus() != 200");
-    			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-    					.entity(externalErrorMessage(response.toString()))
-    					.build();
-    		} else {
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	public Response updatePerson(@PathParam("pid") int idPerson,
+			String inputPersonJSON) {
+		try {
+			System.out
+					.println("updatePerson: Updating Person from Storage Services Module in Business Logic Services");
+
+			String path = "/person/" + idPerson;
+
+			Client client = ClientBuilder.newClient();
+			WebTarget webTarget = client.target(storageServiceURL + path);
+			Builder builder = webTarget.request(mediaType);
+
+			Response response = builder.put(Entity.json(inputPersonJSON));
+
+			String result = response.readEntity(String.class);
+
+			if (response.getStatus() != 200) {
+				System.out
+						.println("Storage Service Error response.getStatus() != 200");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(externalErrorMessage(response.toString()))
+						.build();
+			} else {
 				return Response.ok(result).build();
 			}
-    	}catch(Exception e){
-    		System.out.println("Business Logic Service Error catch response.getStatus() != 200");
-    		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessage(e)).build();
-    	}
-    }
-	
+		} catch (Exception e) {
+			System.out
+					.println("Business Logic Service Error catch response.getStatus() != 200");
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(errorMessage(e)).build();
+		}
+	}
+
 	/**
-	 * DELETE /business-service/person/{idPerson} 
-	 * This method calls a deletePerson method in
-	 * Storage Services Module
+	 * DELETE /business-service/person/{idPerson} This method calls a
+	 * deletePerson method in Storage Services Module
 	 * 
 	 * @return
 	 */
 	@DELETE
 	@Path("{pid}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response deletePerson(@PathParam("pid") int idPerson){
-    	try{
-    		System.out
-			.println("deletePerson: Deleting Person from Storage Services Module in Business Logic Services");
-    		
-    		String path = "/person/" + idPerson;
-    		
-    		Client client = ClientBuilder.newClient();
-    		WebTarget webTarget = client.target(storageServiceURL + path);
-    		Builder builder = webTarget.request(mediaType);
-    		
-    		Response response = builder.delete();
-    		
-    		String result = response.readEntity(String.class);
-    		
-    		if (response.getStatus() != 204) {
-    			System.out
-					.println("Storage Service Error response.getStatus() != 204");
-    			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-    					.entity(externalErrorMessage(response.toString()))
-    					.build();
-    		} else {
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response deletePerson(@PathParam("pid") int idPerson) {
+		try {
+			System.out
+					.println("deletePerson: Deleting Person from Storage Services Module in Business Logic Services");
+
+			String path = "/person/" + idPerson;
+
+			Client client = ClientBuilder.newClient();
+			WebTarget webTarget = client.target(storageServiceURL + path);
+			Builder builder = webTarget.request(mediaType);
+
+			Response response = builder.delete();
+
+			String result = response.readEntity(String.class);
+
+			if (response.getStatus() != 204) {
+				System.out
+						.println("Storage Service Error response.getStatus() != 204");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(externalErrorMessage(response.toString()))
+						.build();
+			} else {
 				return Response.ok(result).build();
 			}
-    	}catch(Exception e){
-    		System.out.println("Business Logic Service Error catch response.getStatus() != 204");
-    		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorMessage(e)).build();
-    	}
-    }
-	
+		} catch (Exception e) {
+			System.out
+					.println("Business Logic Service Error catch response.getStatus() != 204");
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(errorMessage(e)).build();
+		}
+	}
+
 	/**
-	 * GET /business-service/person/{idPerson}/current-health 
-	 * This method calls a getPerson method in
-	 * Storage Services Module
+	 * GET /business-service/person/{idPerson}/current-health This method calls
+	 * a getPerson method in Storage Services Module
 	 * 
 	 * @return
 	 */
@@ -404,11 +396,13 @@ public class PersonResource {
 	public Response readCurrentHealthDetails(@PathParam("pid") int idPerson) {
 		try {
 			System.out
-					.println("readCurrentHealthDetails: Reading list of all current measures for a person with " +  idPerson + " from Storage Services Module in Business Logic Services...");
+					.println("readCurrentHealthDetails: Reading list of all current measures for a person with "
+							+ idPerson
+							+ " from Storage Services Module in Business Logic Services...");
 
 			String path = "/person/" + idPerson;
 			String xmlResponse = null;
-			
+
 			DefaultHttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(storageServiceURL + path);
 			HttpResponse response = client.execute(request);
@@ -425,20 +419,27 @@ public class PersonResource {
 			JSONObject obj = new JSONObject(result.toString());
 
 			if (response.getStatusLine().getStatusCode() == 200) {
-				
+
 				xmlResponse = "<currentHealth-profile>";
 				JSONObject currentObj = (JSONObject) obj.get("currentHealth");
-				
-				JSONArray measureArr = currentObj.getJSONArray("measure"); 
-				for(int j=0;j<measureArr.length(); j++){
-					//measure array json 
+
+				JSONArray measureArr = currentObj.getJSONArray("measure");
+				for (int j = 0; j < measureArr.length(); j++) {
+					// measure array json
 					xmlResponse += "<measure>";
-						xmlResponse += "<mid>" + measureArr.getJSONObject(j).get("mid") + "</mid>";
-						xmlResponse += "<name>" + measureArr.getJSONObject(j).get("name") + "</name>";
-						xmlResponse += "<value>" + measureArr.getJSONObject(j).get("value") + "</value>";
-						xmlResponse += "<created>" + measureArr.getJSONObject(j).get("created") + "</created>";
-					xmlResponse += "</measure>"; 
-				} 
+					xmlResponse += "<mid>"
+							+ measureArr.getJSONObject(j).get("mid") + "</mid>";
+					xmlResponse += "<name>"
+							+ measureArr.getJSONObject(j).get("name")
+							+ "</name>";
+					xmlResponse += "<value>"
+							+ measureArr.getJSONObject(j).get("value")
+							+ "</value>";
+					xmlResponse += "<created>"
+							+ measureArr.getJSONObject(j).get("created")
+							+ "</created>";
+					xmlResponse += "</measure>";
+				}
 				xmlResponse += "</currentHealth-profile>";
 
 				System.out.println(prettyXMLPrint(xmlResponse));
@@ -446,7 +447,7 @@ public class PersonResource {
 				JSONObject xmlJSONObj = XML.toJSONObject(xmlResponse);
 				String jsonPrettyPrintString = xmlJSONObj.toString(4);
 				return Response.ok(jsonPrettyPrintString).build();
-				
+
 			} else {
 				System.out
 						.println("Storage Service Error response.getStatus() != 200");
@@ -463,9 +464,8 @@ public class PersonResource {
 	}
 
 	/**
-	 * GET /business-service/person/{idPerson}/history-health 
-	 * This method calls a getHistoryHealth method in
-	 * Storage Services Module
+	 * GET /business-service/person/{idPerson}/history-health This method calls
+	 * a getHistoryHealth method in Storage Services Module
 	 * 
 	 * @return
 	 */
@@ -475,11 +475,13 @@ public class PersonResource {
 	public Response readHistoryHealthDetails(@PathParam("pid") int idPerson) {
 		try {
 			System.out
-					.println("readHistoryHealthDetails: Reading list of all history measures for a person with " +  idPerson + " from Storage Services Module in Business Logic Services...");
+					.println("readHistoryHealthDetails: Reading list of all history measures for a person with "
+							+ idPerson
+							+ " from Storage Services Module in Business Logic Services...");
 
 			String path = "/person/" + idPerson + "/historyHealth";
 			String xmlResponse = null;
-			
+
 			DefaultHttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(storageServiceURL + path);
 			HttpResponse response = client.execute(request);
@@ -496,21 +498,28 @@ public class PersonResource {
 			JSONObject obj = new JSONObject(result.toString());
 
 			if (response.getStatusLine().getStatusCode() == 200) {
-				
+
 				xmlResponse = "<historyHealth-profile>";
-				
-				JSONArray measureArr = (JSONArray) obj.getJSONArray("measure"); 
-				for(int j=0;j<measureArr.length(); j++){
-					
-					//measure array json 
+
+				JSONArray measureArr = (JSONArray) obj.getJSONArray("measure");
+				for (int j = 0; j < measureArr.length(); j++) {
+
+					// measure array json
 					xmlResponse += "<measure>";
-						xmlResponse += "<mid>" + measureArr.getJSONObject(j).get("mid") + "</mid>";
-						xmlResponse += "<name>" + measureArr.getJSONObject(j).get("name") + "</name>";
-						xmlResponse += "<value>" + measureArr.getJSONObject(j).get("value") + "</value>";
-						xmlResponse += "<created>" + measureArr.getJSONObject(j).get("created") + "</created>";
-					xmlResponse += "</measure>"; 
-				} 
-				
+					xmlResponse += "<mid>"
+							+ measureArr.getJSONObject(j).get("mid") + "</mid>";
+					xmlResponse += "<name>"
+							+ measureArr.getJSONObject(j).get("name")
+							+ "</name>";
+					xmlResponse += "<value>"
+							+ measureArr.getJSONObject(j).get("value")
+							+ "</value>";
+					xmlResponse += "<created>"
+							+ measureArr.getJSONObject(j).get("created")
+							+ "</created>";
+					xmlResponse += "</measure>";
+				}
+
 				xmlResponse += "</historyHealth-profile>";
 
 				System.out.println(prettyXMLPrint(xmlResponse));
@@ -518,7 +527,7 @@ public class PersonResource {
 				JSONObject xmlJSONObj = XML.toJSONObject(xmlResponse);
 				String jsonPrettyPrintString = xmlJSONObj.toString(4);
 				return Response.ok(jsonPrettyPrintString).build();
-				
+
 			} else {
 				System.out
 						.println("Storage Service Error response.getStatus() != 200");
@@ -534,28 +543,30 @@ public class PersonResource {
 		}
 	}
 
-	
-	
 	// ******************* MEASURE ***********************
-	
+
 	/**
-	 * GET /business-service/person/{idPerson}/health-profile/{measureName} 
-	 * This method calls a getMeasure method in
-	 * Storage Services Module
+	 * GET /business-service/person/{idPerson}/health-profile/{measureName} This
+	 * method calls a getMeasure method in Storage Services Module
 	 * 
 	 * @return
 	 */
 	@GET
 	@Path("{pid}/health-profile/{measureName}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response readMeasureNameDetails(@PathParam("pid") int idPerson, @PathParam("measureName") String measureName) {
+	public Response readMeasureNameDetails(@PathParam("pid") int idPerson,
+			@PathParam("measureName") String measureName) {
 		try {
 			System.out
-					.println("readMeasureHealthDetails: Reading list of all " + measureName + " for a person with " +  idPerson + " from Storage Services Module in Business Logic Services...");
+					.println("readMeasureHealthDetails: Reading list of all "
+							+ measureName
+							+ " for a person with "
+							+ idPerson
+							+ " from Storage Services Module in Business Logic Services...");
 
 			String path = "/person/" + idPerson + "/measure/" + measureName;
 			String xmlResponse = null;
-			
+
 			DefaultHttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(storageServiceURL + path);
 			HttpResponse response = client.execute(request);
@@ -570,36 +581,43 @@ public class PersonResource {
 			}
 
 			JSONObject obj = new JSONObject(result.toString());
-			
+
 			if (response.getStatusLine().getStatusCode() == 200) {
-				
+
 				xmlResponse = "<health-profile>";
-				
-				JSONArray measureArr = (JSONArray) obj.getJSONArray("measure"); 
-				for(int j=0;j<measureArr.length(); j++){
-					
-					//measure array json 
+
+				JSONArray measureArr = (JSONArray) obj.getJSONArray("measure");
+				for (int j = 0; j < measureArr.length(); j++) {
+
+					// measure array json
 					xmlResponse += "<" + measureName + ">";
-						xmlResponse += "<mid>" + measureArr.getJSONObject(j).get("mid") + "</mid>";
-						xmlResponse += "<name>" + measureArr.getJSONObject(j).get("name") + "</name>";
-						xmlResponse += "<value>" + measureArr.getJSONObject(j).get("value") + "</value>";
-						xmlResponse += "<created>" + measureArr.getJSONObject(j).get("created") + "</created>";
-					xmlResponse += "</" + measureName + ">"; 
-				} 
-				
+					xmlResponse += "<mid>"
+							+ measureArr.getJSONObject(j).get("mid") + "</mid>";
+					xmlResponse += "<name>"
+							+ measureArr.getJSONObject(j).get("name")
+							+ "</name>";
+					xmlResponse += "<value>"
+							+ measureArr.getJSONObject(j).get("value")
+							+ "</value>";
+					xmlResponse += "<created>"
+							+ measureArr.getJSONObject(j).get("created")
+							+ "</created>";
+					xmlResponse += "</" + measureName + ">";
+				}
+
 				xmlResponse += "</health-profile>";
 
 				System.out.println(prettyXMLPrint(xmlResponse));
 
 				JSONObject xmlJSONObj = XML.toJSONObject(xmlResponse);
 				String jsonPrettyPrintString = xmlJSONObj.toString(4);
-				return Response.ok(jsonPrettyPrintString).build();	
-			}else {
+				return Response.ok(jsonPrettyPrintString).build();
+			} else {
 				System.out
-				.println("Storage Service Error response.getStatus() != 200");
+						.println("Storage Service Error response.getStatus() != 200");
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-				.entity(externalErrorMessage(response.toString()))
-				.build();
+						.entity(externalErrorMessage(response.toString()))
+						.build();
 			}
 		} catch (Exception e) {
 			System.out
@@ -609,194 +627,488 @@ public class PersonResource {
 		}
 	}
 
-	
 	// ******************* GOAL ***********************
-	
+
 	/**
-	 * GET /business-service/person/{idPerson}/goal  
-	 * This method calls a getGoalList method in
-	 * Storage Services Module
+	 * GET /business-service/person/{idPerson}/goal This method calls a
+	 * getGoalList method in Storage Services Module
 	 * 
 	 * @return
 	 */
 	@GET
 	@Path("{pid}/goal")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response readGoalListDetails(@PathParam("pid") int idPerson){
-    	try{
-    		System.out
-			.println("readGoalListDetails: Reading list of all goals for Person with " + idPerson + " from Storage Services Module in Business Logic Services...");
-    		
-    		String path = "/person/" + idPerson + "/goal";
-        	
-        	DefaultHttpClient client = new DefaultHttpClient();
-        	HttpGet request = new HttpGet(storageServiceURL + path);
-        	HttpResponse response = client.execute(request);
-        	
-        	BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response readGoalListDetails(@PathParam("pid") int idPerson) {
+		try {
+			System.out
+					.println("readGoalListDetails: Reading list of all goals for Person with "
+							+ idPerson
+							+ " from Storage Services Module in Business Logic Services...");
 
-        	StringBuffer result = new StringBuffer();
-        	String line = "";
-        	while ((line = rd.readLine()) != null) {
-        	    result.append(line);
-        	}
+			String path = "/person/" + idPerson + "/goal";
 
-        	JSONObject o = new JSONObject(result.toString());
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpGet request = new HttpGet(storageServiceURL + path);
+			HttpResponse response = client.execute(request);
 
-        	if(response.getStatusLine().getStatusCode() == 200){
-                return Response.ok(o.toString()).build();
-                
-        	}else{
-        		System.out
-				.println("Storage Service Error response.getStatus() != 200");
-        		return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-				.entity(externalErrorMessage(response.toString()))
-				.build();
-        		//return Response.status(204).build();
-        	}
-      
-    	}catch(Exception e){
-    		System.out
-			.println("Business Logic Service Error catch response.getStatus() != 200");
-    		return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-			.entity(errorMessage(e)).build();
-    	}
-    	
-    }
-	
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					response.getEntity().getContent()));
+
+			StringBuffer result = new StringBuffer();
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				result.append(line);
+			}
+
+			JSONObject o = new JSONObject(result.toString());
+
+			if (response.getStatusLine().getStatusCode() == 200) {
+				return Response.ok(o.toString()).build();
+
+			} else {
+				System.out
+						.println("Storage Service Error response.getStatus() != 200");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(externalErrorMessage(response.toString()))
+						.build();
+				// return Response.status(204).build();
+			}
+
+		} catch (Exception e) {
+			System.out
+					.println("Business Logic Service Error catch response.getStatus() != 200");
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(errorMessage(e)).build();
+		}
+
+	}
+
+	/**
+	 * GET /business-service/person/{idPerson}/comparison-value/{measureName} 
+	 * This method calls a getPerson method in Storage Services Module
+	 * @param idPerson
+	 * @param measureName
+	 * @return
+	 */
 	@GET
 	@Path("{pid}/comparison-value/{measureName}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response comparisonValueOfMeasure(@PathParam("pid") int idPerson, @PathParam("measureName") String measureName){
-		try{
+	public Response comparisonValueOfMeasure(@PathParam("pid") int idPerson,
+			@PathParam("measureName") String measureName) {
+		try {
 			System.out
-			.println("comparisonValueOfMeasure: Getting the result about the comparison of the value's " + measureName + " between goal and currentHealth for Person with " + idPerson + " from Storage Services Module in Business Logic Services...");
-    		
-    		String path = "/person/" + idPerson;
-    		
-    		String xmlBuild = "";
-    		String comparison = "";
-    		
-    		double currentMeasureValueDouble = -1.;
+					.println("comparisonValueOfMeasure: Getting the result about the comparison of the value's "
+							+ measureName
+							+ " between goal and currentHealth for Person with "
+							+ idPerson
+							+ " from Storage Services Module in Business Logic Services...");
+
+			String path = "/person/" + idPerson;
+
+			String xmlBuild = "";
+			String comparison = "";
+
+			double currentMeasureValueDouble = -1.;
 			double goalValueDouble = -1.;
-    		
+
 			int currentMeasureValueInt = -1;
 			int goalValueInt = -1;
-			
-    		
-        	DefaultHttpClient client = new DefaultHttpClient();
-        	HttpGet request = new HttpGet(storageServiceURL + path);
-        	HttpResponse response = client.execute(request);
-        	
-        	BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-        	StringBuffer result = new StringBuffer();
-        	String line = "";
-        	while ((line = rd.readLine()) != null) {
-        	    result.append(line);
-        	}
-        	
-        	//person json obj
-        	JSONObject obj = new JSONObject(result.toString());
-			
-        	//GETTING CURRENT MEASURE LIST FOR A SPECIFIED PERSON
-        	//currentHealth json obj - measure json array
-        	JSONArray measureArr = (JSONArray) obj.getJSONObject("currentHealth").getJSONArray("measure");
-        	for(int i = 0; i < measureArr.length(); i++){
-        		if((measureArr.getJSONObject(i).getString("name")).equals(measureName)){
-        			String target = measureArr.getJSONObject(i).getString("name");
-        			System.out.println("measureName : " + target);
-        			if(target.equals("heart rate") || target.equals("steps")){
-						currentMeasureValueInt = measureArr.getJSONObject(i).getInt("value");
-						System.out.println("measure-value: " + currentMeasureValueInt);
-					}else{
-						currentMeasureValueDouble = measureArr.getJSONObject(i).getDouble("value");
-						System.out.println("measure-value: " + currentMeasureValueDouble);
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpGet request = new HttpGet(storageServiceURL + path);
+			HttpResponse response = client.execute(request);
+
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					response.getEntity().getContent()));
+
+			StringBuffer result = new StringBuffer();
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				result.append(line);
+			}
+
+			// person json obj
+			JSONObject obj = new JSONObject(result.toString());
+
+			// GETTING CURRENT MEASURE LIST FOR A SPECIFIED PERSON
+			// currentHealth json obj - measure json array
+			JSONArray measureArr = (JSONArray) obj.getJSONObject(
+					"currentHealth").getJSONArray("measure");
+			for (int i = 0; i < measureArr.length(); i++) {
+				if ((measureArr.getJSONObject(i).getString("name"))
+						.equals(measureName)) {
+					String target = measureArr.getJSONObject(i).getString(
+							"name");
+					System.out.println("measureName : " + target);
+					if (target.equals("heart rate") || target.equals("steps")) {
+						currentMeasureValueInt = measureArr.getJSONObject(i)
+								.getInt("value");
+						System.out.println("measure-value: "
+								+ currentMeasureValueInt);
+					} else {
+						currentMeasureValueDouble = measureArr.getJSONObject(i)
+								.getDouble("value");
+						System.out.println("measure-value: "
+								+ currentMeasureValueDouble);
 					}
-        		}
-        	}
-        	
-        	//GETTING GOAL LIST FOR A SPECIFIED PERSON
-        	//goals json obj - goal json array
-        	JSONArray goalArr = (JSONArray) obj.getJSONObject("goals").getJSONArray("goal");
-        	for(int i = 0; i < goalArr.length(); i++){
-        		if((goalArr.getJSONObject(i).getString("type")).equals(measureName)){
-        			String target = goalArr.getJSONObject(i).getString("type");
-        			System.out.println("goalType : " + target);
-        			if(target.equals("heart rate") || target.equals("steps")){
+				}
+			}
+
+			// GETTING GOAL LIST FOR A SPECIFIED PERSON
+			// goals json obj - goal json array
+			JSONArray goalArr = (JSONArray) obj.getJSONObject("goals")
+					.getJSONArray("goal");
+			for (int i = 0; i < goalArr.length(); i++) {
+				if ((goalArr.getJSONObject(i).getString("type"))
+						.equals(measureName)) {
+					String target = goalArr.getJSONObject(i).getString("type");
+					System.out.println("goalType : " + target);
+					if (target.equals("heart rate") || target.equals("steps")) {
 						goalValueInt = goalArr.getJSONObject(i).getInt("value");
 						System.out.println("goal-value: " + goalValueInt);
-					}else{
-						goalValueDouble = goalArr.getJSONObject(i).getDouble("value");
+					} else {
+						goalValueDouble = goalArr.getJSONObject(i).getDouble(
+								"value");
 						System.out.println("goal-value: " + goalValueDouble);
 					}
-        		}
-        	}
-        	
-        	//COMPARISON
-        	switch(measureName){
+				}
+			}
+
+			// COMPARISON
+			switch (measureName) {
 			case "heart rate":
-				if(currentMeasureValueInt == -1 || goalValueInt == -1){
-	        		return Response.status(404).build();
-	        	}
-	        	if(currentMeasureValueInt >= goalValueInt){
-	        		comparison = "ok";
-	        	}else{
-	        		comparison = "ko";
-	        	}
+				if (currentMeasureValueInt == -1 || goalValueInt == -1) {
+					return Response.status(404).build();
+				}
+				if (currentMeasureValueInt >= goalValueInt) {
+					comparison = "ok";
+				} else {
+					comparison = "ko";
+				}
 				break;
 			case "steps":
-				if(currentMeasureValueInt == -1 || goalValueInt == -1){
-	        		return Response.status(404).build();
-	        	}
-	        	if(currentMeasureValueInt >= goalValueInt){
-	        		comparison = "ok";
-	        	}else{
-	        		comparison = "ko";
-	        	}
+				if (currentMeasureValueInt == -1 || goalValueInt == -1) {
+					return Response.status(404).build();
+				}
+				if (currentMeasureValueInt >= goalValueInt) {
+					comparison = "ok";
+				} else {
+					comparison = "ko";
+				}
 				break;
 			default:
-				if(currentMeasureValueDouble == -1. || goalValueDouble == -1.){
-	        		return Response.status(404).build();
-	        	}
-	        	if(currentMeasureValueDouble >= goalValueDouble){
-	        		comparison = "ok";
-	        	}else{
-	        		comparison = "ko";
-	        	}
+				if (currentMeasureValueDouble == -1. || goalValueDouble == -1.) {
+					return Response.status(404).build();
+				}
+				if (currentMeasureValueDouble >= goalValueDouble) {
+					comparison = "ok";
+				} else {
+					comparison = "ko";
+				}
 			}
 			System.out.println("comparison: " + comparison);
-        	
-        	
-        	xmlBuild = "<comparison-information>";
-        		xmlBuild += "<measure>" + measureName + "</measure>";
-        		if(measureName.equals("heart rate") || measureName.equals("steps")){
-        			xmlBuild += "<currentMeasureValue>" + currentMeasureValueInt + "</currentMeasureValue>";
-            		xmlBuild += "<goalValue>" + goalValueInt + "</goalValue>";
-        		}else{
-        			xmlBuild += "<currentMeasureValue>" + currentMeasureValueDouble + "</currentMeasureValue>";
-            		xmlBuild += "<goalValue>" + goalValueDouble + "</goalValue>";
-        		}
-        		xmlBuild += "<result>" + comparison + "</result>";
-        	xmlBuild += "</comparison-information>";
-        	
-        	System.out.println(prettyXMLPrint(xmlBuild));
-        	
-        	JSONObject xmlJSONObj = XML.toJSONObject(xmlBuild);
-            String jsonPrettyPrintString = xmlJSONObj.toString(4);
-            
-            return Response.ok(jsonPrettyPrintString).build();
-            
-		}catch(Exception e){
+
+			xmlBuild = "<comparison-information>";
+			xmlBuild += "<measure>" + measureName + "</measure>";
+
+			if (measureName.equals("heart rate") || measureName.equals("steps")) {
+				xmlBuild += "<currentMeasureValue>" + currentMeasureValueInt
+						+ "</currentMeasureValue>";
+				xmlBuild += "<goalValue>" + goalValueInt + "</goalValue>";
+			} else {
+				xmlBuild += "<currentMeasureValue>" + currentMeasureValueDouble
+						+ "</currentMeasureValue>";
+				xmlBuild += "<goalValue>" + goalValueDouble + "</goalValue>";
+			}
+
+			xmlBuild += "<result>" + comparison + "</result>";
+			xmlBuild += "</comparison-information>";
+
+			System.out.println(prettyXMLPrint(xmlBuild));
+
+			JSONObject xmlJSONObj = XML.toJSONObject(xmlBuild);
+			String jsonPrettyPrintString = xmlJSONObj.toString(4);
+
+			return Response.ok(jsonPrettyPrintString).build();
+
+		} catch (Exception e) {
 			System.out
-			.println("Business Logic Service Error catch response.getStatus() != 200");
-    		return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-			.entity(errorMessage(e)).build();
+					.println("Business Logic Service Error catch response.getStatus() != 200");
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(errorMessage(e)).build();
 		}
 	}
-	
+
+	/**
+	 * GET /business-service/person/{idPerson}/motivational-goal/{measureName} 
+	 * This method calls a getPerson method in Storage Services Module
+	 * @param idPerson
+	 * @param measureName
+	 * @return
+	 */
+	@GET
+	@Path("{pid}/motivation-goal/{measureName}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response readMotivationGoal(@PathParam("pid") int idPerson,
+			@PathParam("measureName") String measureName) {
+		try {
+			System.out
+					.println("motivationGoal: Checking goal for "
+							+ measureName
+							+ ", for a specified Person with "
+							+ idPerson
+							+ " from Storage Services Module in Business Logic Services...");
+
+			String path = "/person/" + idPerson;
+			String xmlBuild = "";
+			Random generator = new Random();
+			int randIndex = 0;
+
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpGet request = new HttpGet(storageServiceURL + path);
+			HttpResponse response = client.execute(request);
+
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					response.getEntity().getContent()));
+
+			StringBuffer result = new StringBuffer();
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				result.append(line);
+			}
+
+			JSONObject motivationGoalObj = new JSONObject(
+					createJSONMotivationGoal());
+			// System.out.println("lenght: "
+			// + motivationGoalObj.getJSONArray("motivation-goal")
+			// .length());
+
+			JSONObject obj = new JSONObject(result.toString());
+
+			xmlBuild = "<motivationGoal>";
+			xmlBuild += "<person>" + obj.getString("lastname") + " "
+					+ obj.getString("firstname") + "</person>";
+
+			JSONArray goalArr = (JSONArray) obj.getJSONObject("goals")
+					.getJSONArray("goal");
+
+			JSONObject goal = null;
+
+			for (int i = 0; i < goalArr.length(); i++) {
+				if (goalArr.getJSONObject(i).getString("type")
+						.equals(measureName)) {
+					goal = goalArr.getJSONObject(i);
+				}
+			}
+
+			if (goal == null) {
+				xmlBuild += "<goal>" + "don't exist goal for " + measureName + "</goal>";
+			} else {
+				randIndex = generator.nextInt(motivationGoalObj.getJSONArray(
+						"motivation-goal").length());
+				System.out.println("index: " + randIndex);
+
+				xmlBuild += "<goal>";
+				xmlBuild += "<measure>" + goal.getString("type") + "</measure>";
+				xmlBuild += "<value>" + goal.getString("value") + "</value>";
+				xmlBuild += "<motivation>"
+						+ motivationGoalObj.getJSONArray("motivation-goal")
+								.getJSONObject(randIndex)
+								.getString("motivation") + "</motivation>";
+				xmlBuild += "<author>"
+						+ motivationGoalObj.getJSONArray("motivation-goal")
+								.getJSONObject(randIndex).getString("author")
+						+ "</author>";
+				xmlBuild += "</goal>";
+
+			}
+
+			xmlBuild += "</motivationGoal>";
+
+			System.out.println(prettyXMLPrint(xmlBuild));
+
+			JSONObject xmlJSONObj = XML.toJSONObject(xmlBuild);
+			String jsonPrettyPrintString = xmlJSONObj.toString(4);
+
+			return Response.ok(jsonPrettyPrintString).build();
+
+		} catch (Exception e) {
+			System.out
+					.println("Business Logic Service Error catch response.getStatus() != 200");
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(errorMessage(e)).build();
+		}
+	}
+
+	/**
+	 * GET /business-service/person/{idPerson}/motivation-health/{measureName} 
+	 * This method calls a getPerson method in Storage Services Module
+	 * @param idPerson
+	 * @param measureName
+	 * @return
+	 */
+	@GET
+	@Path("{pid}/motivation-health/{measureName}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response readMotivationHealth(@PathParam("pid") int idPerson,
+			@PathParam("measureName") String measureName) {
+		try {
+			System.out
+					.println("readMotivationHealth: Checking measure for "
+							+ measureName
+							+ ", for a specified Person with "
+							+ idPerson
+							+ " from Storage Services Module in Business Logic Services...");
+
+			String path = "/person/" + idPerson;
+			String xmlBuild = "";
+			Random generator = new Random();
+			int randIndex = 0;
+
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpGet request = new HttpGet(storageServiceURL + path);
+			HttpResponse response = client.execute(request);
+
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					response.getEntity().getContent()));
+
+			StringBuffer result = new StringBuffer();
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				result.append(line);
+			}
+
+			JSONObject motivationHealthObj = new JSONObject(
+					createJSONMotivationHealth());
+
+			JSONObject obj = new JSONObject(result.toString());
+
+			xmlBuild = "<motivationHealth>";
+			xmlBuild += "<person>" + obj.getString("lastname") + " "
+					+ obj.getString("firstname") + "</person>";
+
+			JSONArray measureArr = (JSONArray) obj.getJSONObject(
+					"currentHealth").getJSONArray("measure");
+
+			JSONObject measure = null;
+
+			for (int i = 0; i < measureArr.length(); i++) {
+				if (measureArr.getJSONObject(i).getString("name")
+						.equals(measureName)) {
+					measure = measureArr.getJSONObject(i);
+				}
+			}
+			if (measure == null) {
+				xmlBuild += "<measure>" + measureName + " don't exist"
+						+ "</measure>";
+			} else {
+				randIndex = generator.nextInt(motivationHealthObj.getJSONArray(
+						"motivation-health").length());
+				System.out.println("index: " + randIndex);
+
+				xmlBuild += "<measure>";
+				xmlBuild += "<name>" + measure.getString("name") + "</name>";
+				xmlBuild += "<value>" + measure.getString("value") + "</value>";
+				xmlBuild += "<motivation>"
+						+ motivationHealthObj.getJSONArray("motivation-health")
+								.getJSONObject(randIndex)
+								.getString("motivation") + "</motivation>";
+				xmlBuild += "<author>"
+						+ motivationHealthObj.getJSONArray("motivation-health")
+								.getJSONObject(randIndex).getString("author")
+						+ "</author>";
+				xmlBuild += "</measure>";
+
+			}
+
+			xmlBuild += "</motivationHealth>";
+
+			System.out.println(prettyXMLPrint(xmlBuild));
+
+			JSONObject xmlJSONObj = XML.toJSONObject(xmlBuild);
+			String jsonPrettyPrintString = xmlJSONObj.toString(4);
+
+			return Response.ok(jsonPrettyPrintString).build();
+
+		} catch (Exception e) {
+			System.out
+					.println("Business Logic Service Error catch response.getStatus() != 200");
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(errorMessage(e)).build();
+		}
+
+	}
+
+	public static String createJSONMotivationHealth() {
+		// create string array with motivation health - exercise - activity and
+		// his author
+		String[] motivationsHealth = {
+				"Our health always seems much more valuable after we lose it.",
+				"A man’s health can be judged by which he takes two at a time – pills or stairs.",
+				"Living a healthy lifestyle will only deprive you of poor health, lethargy, and fat.",
+				"Health is a state of complete physical, mental and social well-being, and not merely the absence of disease or infirmity.",
+				"Those who think they have not time for bodily exercise will sooner or later have to find time for illness.",
+				"Movement is a medicine for creating change in a person’s physical, emotional, and mental states.",
+				"If it weren’t for the fact that the TV set and the refrigerator are so far apart, some of us wouldn’t get any exercise at all.",
+				"Too many people confine their exercise to jumping to conclusions, running up bills, stretching the truth, bending over backwards, lying down on the job, sidestepping responsibility and pushing their luck.",
+				"Fitness – If it came in a bottle, everybody would have a great body.",
+				"Walking is the best possible exercise. Habituate yourself to walk very far.",
+				"Walking: the most ancient exercise and still the best modern exercise." };
+
+		String[] authors = { "Unknown", "Joan Welsh", "Jill Johnson",
+				"World Health Organization", "Edward Stanley", "Carol Welch",
+				"Joey Adams", "Anonymous", "Cher", "Thomas Jefferson",
+				"Carrie Latet" };
+
+		// create motivation quotes json obj
+		JSONObject objInner;
+		JSONArray arr = new JSONArray();
+		for (int i = 0; i < motivationsHealth.length; i++) {
+			objInner = new JSONObject();
+			objInner.put("motivation", motivationsHealth[i]);
+			objInner.put("author", authors[i]);
+			arr.put(objInner);
+		}
+		JSONObject obj = new JSONObject();
+		obj.put("motivation-health", arr);
+		return obj.toString();
+	}
+
+	public static String createJSONMotivationGoal() {
+		// create string array with motivation goal and his author
+		String[] motivationsGoal = {
+				"A goal without a plan is just a wish.",
+				"Nothing can stop the man with the right mental attitude from achieving his goal; nothing on earth can help the man with the wrong mental attitude.",
+				"If you want to accomplish anything in life, you can’t just sit back and hope it will happen. You’ve got to make it happen.",
+				"You must have long-range goals to keep you from being frustrated by short-range failures.",
+				"If what you are doing is not moving you towards your goals, then it’s moving you away from your goals.",
+				"People with clear, written goals, accomplish far more in a shorter period of time than people without them could ever imagine.",
+				"You cannot expect to achieve new goals or move beyond your present circumstances unless you change.",
+				"This one step – choosing a goal and sticking to it – changes everything.",
+				"Your goals, minus your doubts, equal your reality." };
+
+		String[] authors = { "Larry Elder", "Thomas Jefferson", "Chuck Norris",
+				"Charles C. Noble", "Brian Tracy", "Brian Tracy", "Les Brown",
+				"Scott Reed", "Ralph Marston" };
+
+		// create motivation quotes json obj
+		JSONObject objInner;
+		JSONArray arr = new JSONArray();
+		for (int i = 0; i < motivationsGoal.length; i++) {
+			objInner = new JSONObject();
+			objInner.put("motivation", motivationsGoal[i]);
+			objInner.put("author", authors[i]);
+			arr.put(objInner);
+		}
+		JSONObject obj = new JSONObject();
+		obj.put("motivation-goal", arr);
+		return obj.toString();
+	}
+
 	/**
 	 * Prints pretty format for XML
 	 * 
