@@ -111,84 +111,7 @@ public class PersonResource {
 			JSONObject obj = new JSONObject(result.toString());
 
 			if (response.getStatusLine().getStatusCode() == 200) {
-
 				return Response.ok(obj.toString()).build();
-
-				/*
-				 * // people object json xmlResponse = "<people>";
-				 * 
-				 * JSONArray arr = (JSONArray) obj.getJSONArray("person");
-				 * 
-				 * for (int i = 0; i < arr.length(); i++) {
-				 * 
-				 * // person array json xmlResponse += "<person>";
-				 * 
-				 * xmlResponse += "<pid>" + arr.getJSONObject(i).get("pid") +
-				 * "</pid>"; xmlResponse += "<firstname>" +
-				 * arr.getJSONObject(i).get("firstname") + "</firstname>";
-				 * xmlResponse += "<lastname>" +
-				 * arr.getJSONObject(i).get("lastname") + "</lastname>";
-				 * xmlResponse += "<birthdate>" +
-				 * arr.getJSONObject(i).get("birthdate") + "</birthdate>";
-				 * xmlResponse += "<email>" + arr.getJSONObject(i).get("email")
-				 * + "</email>"; xmlResponse += "<gender>" +
-				 * arr.getJSONObject(i).get("gender") + "</gender>";
-				 * 
-				 * 
-				 * xmlResponse += "<currentHealth>"; JSONObject currentObj =
-				 * (JSONObject)
-				 * arr.getJSONObject(i).getJSONObject("currentHealth");
-				 * JSONArray measureArr = currentObj.getJSONArray("measure");
-				 * for(int j=0; j<measureArr.length(); j++){
-				 * 
-				 * //measure array json xmlResponse += "<measure>";
-				 * 
-				 * xmlResponse += "<mid>" +
-				 * measureArr.getJSONObject(j).get("mid") + "</mid>";
-				 * xmlResponse += "<name>" +
-				 * measureArr.getJSONObject(j).get("name") + "</name>";
-				 * xmlResponse += "<value>" +
-				 * measureArr.getJSONObject(j).get("value") + "</value>";
-				 * xmlResponse += "<created>" +
-				 * measureArr.getJSONObject(j).get("created") + "</created>";
-				 * 
-				 * xmlResponse += "</measure>"; } xmlResponse +=
-				 * "</currentHealth>";
-				 * 
-				 * 
-				 * 
-				 * xmlResponse += "<goals>"; JSONObject goalsObj = (JSONObject)
-				 * arr.getJSONObject(i).getJSONObject("goals"); JSONArray
-				 * goalArr = goalsObj.getJSONArray("goal");
-				 * 
-				 * for(int k=0; k<goalArr.length(); k++){
-				 * 
-				 * //goal array json xmlResponse += "<goal>";
-				 * 
-				 * xmlResponse += "<gid>" + goalArr.getJSONObject(k).get("gid")
-				 * + "</gid>"; xmlResponse += "<type>" +
-				 * goalArr.getJSONObject(k).get("type") + "</type>"; xmlResponse
-				 * += "<value>" + goalArr.getJSONObject(k).get("value") +
-				 * "</value>"; xmlResponse += "<startDateGoal>" +
-				 * goalArr.getJSONObject(k).get("startDateGoal") +
-				 * "</startDateGoal>"; xmlResponse += "<endDateGoal>" +
-				 * goalArr.getJSONObject(k).get("endDateGoal") +
-				 * "</endDateGoal>"; xmlResponse += "<achieved>" +
-				 * goalArr.getJSONObject(k).get("achieved") + "</achieved>";
-				 * 
-				 * xmlResponse += "</goal>"; } xmlResponse += "</goals>";
-				 * 
-				 * 
-				 * xmlResponse += "</person>"; }
-				 * 
-				 * xmlResponse += "</people>";
-				 * 
-				 * System.out.println(prettyXMLPrint(xmlResponse));
-				 * 
-				 * JSONObject xmlJSONObj = XML.toJSONObject(xmlResponse); String
-				 * jsonPrettyPrintString = xmlJSONObj.toString(4); return
-				 * Response.ok(jsonPrettyPrintString).build();
-				 */
 			} else {
 				System.out
 						.println("Storage Service Error response.getStatus() != 200");
@@ -214,7 +137,7 @@ public class PersonResource {
 	@Path("{pid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response readPerson(@PathParam("pid") int idPerson) {
+	public Response readPersonDetails(@PathParam("pid") int idPerson) {
 		try {
 			System.out
 					.println("readPerson: Reading Person with "
@@ -425,20 +348,24 @@ public class PersonResource {
 
 				JSONArray measureArr = currentObj.getJSONArray("measure");
 				for (int j = 0; j < measureArr.length(); j++) {
+					
+					String sMeasure = measureArr.getJSONObject(j).getString("name");
+					String tMeasure = sMeasure.replaceAll(" ", "-");
+					
 					// measure array json
-					xmlResponse += "<measure>";
-					xmlResponse += "<mid>"
-							+ measureArr.getJSONObject(j).get("mid") + "</mid>";
-					xmlResponse += "<name>"
+					xmlResponse += "<" + tMeasure + ">";
+					xmlResponse += "<id>"
+							+ measureArr.getJSONObject(j).get("mid") + "</id>";
+					/*xmlResponse += "<name>"
 							+ measureArr.getJSONObject(j).get("name")
-							+ "</name>";
+							+ "</name>";*/
 					xmlResponse += "<value>"
 							+ measureArr.getJSONObject(j).get("value")
 							+ "</value>";
 					xmlResponse += "<created>"
 							+ measureArr.getJSONObject(j).get("created")
 							+ "</created>";
-					xmlResponse += "</measure>";
+					xmlResponse += "</" + tMeasure + ">";
 				}
 				xmlResponse += "</currentHealth-profile>";
 
@@ -504,20 +431,23 @@ public class PersonResource {
 				JSONArray measureArr = (JSONArray) obj.getJSONArray("measure");
 				for (int j = 0; j < measureArr.length(); j++) {
 
+					String sMeasure = measureArr.getJSONObject(j).getString("name");
+					String tMeasure = sMeasure.replaceAll(" ", "-");
+					
 					// measure array json
-					xmlResponse += "<measure>";
-					xmlResponse += "<mid>"
-							+ measureArr.getJSONObject(j).get("mid") + "</mid>";
-					xmlResponse += "<name>"
+					xmlResponse += "<" + tMeasure + ">";
+					xmlResponse += "<id>"
+							+ measureArr.getJSONObject(j).get("mid") + "</id>";
+					/*xmlResponse += "<name>"
 							+ measureArr.getJSONObject(j).get("name")
-							+ "</name>";
+							+ "</name>";*/
 					xmlResponse += "<value>"
 							+ measureArr.getJSONObject(j).get("value")
 							+ "</value>";
 					xmlResponse += "<created>"
 							+ measureArr.getJSONObject(j).get("created")
 							+ "</created>";
-					xmlResponse += "</measure>";
+					xmlResponse += "</" + tMeasure + ">";
 				}
 
 				xmlResponse += "</historyHealth-profile>";
@@ -546,15 +476,15 @@ public class PersonResource {
 	// ******************* MEASURE ***********************
 
 	/**
-	 * GET /business-service/person/{idPerson}/health-profile/{measureName} This
+	 * GET /business-service/person/{idPerson}/measure/{measureName} This
 	 * method calls a getMeasure method in Storage Services Module
 	 * 
 	 * @return
 	 */
 	@GET
-	@Path("{pid}/health-profile/{measureName}")
+	@Path("{pid}/measure/{measureName}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response readMeasureNameDetails(@PathParam("pid") int idPerson,
+	public Response readMeasureDetails(@PathParam("pid") int idPerson,
 			@PathParam("measureName") String measureName) {
 		try {
 			System.out
@@ -584,7 +514,7 @@ public class PersonResource {
 
 			if (response.getStatusLine().getStatusCode() == 200) {
 
-				xmlResponse = "<health-profile>";
+				xmlResponse = "<measure-profile>";
 
 				JSONArray measureArr = (JSONArray) obj.getJSONArray("measure");
 				for (int j = 0; j < measureArr.length(); j++) {
@@ -605,7 +535,7 @@ public class PersonResource {
 					xmlResponse += "</" + measureName + ">";
 				}
 
-				xmlResponse += "</health-profile>";
+				xmlResponse += "</measure-profile>";
 
 				System.out.println(prettyXMLPrint(xmlResponse));
 
