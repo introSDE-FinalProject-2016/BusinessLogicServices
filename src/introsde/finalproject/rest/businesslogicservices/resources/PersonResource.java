@@ -81,7 +81,7 @@ public class PersonResource {
 	// ******************* PERSON ***********************
 
 	/**
-	 * GET /business-service/person This method calls a getPersonList method in
+	 * GET /businessLogic-service/person This method calls a getPersonList method in
 	 * Storage Services Module
 	 * 
 	 * @return
@@ -128,7 +128,7 @@ public class PersonResource {
 	}
 
 	/**
-	 * GET /business-service/person/{idPerson} This method calls a getPerson
+	 * GET /businessLogic-service/person/{idPerson} This method calls a getPerson
 	 * method in Storage Services Module
 	 * 
 	 * @return
@@ -182,7 +182,7 @@ public class PersonResource {
 	}
 
 	/**
-	 * POST /business-service/person This method calls a createPerson method in
+	 * POST /businessLogic-service/person This method calls a createPerson method in
 	 * Storage Services Module
 	 * 
 	 * @return
@@ -224,7 +224,7 @@ public class PersonResource {
 	}
 
 	/**
-	 * PUT /business-service/person/{idPerson} This method calls a updatePerson
+	 * PUT /businessLogic-service/person/{idPerson} This method calls a updatePerson
 	 * method in Storage Services Module
 	 * 
 	 * @return
@@ -267,7 +267,7 @@ public class PersonResource {
 	}
 
 	/**
-	 * DELETE /business-service/person/{idPerson} This method calls a
+	 * DELETE /businessLogic-service/person/{idPerson} This method calls a
 	 * deletePerson method in Storage Services Module
 	 * 
 	 * @return
@@ -308,7 +308,7 @@ public class PersonResource {
 	}
 
 	/**
-	 * GET /business-service/person/{idPerson}/current-health This method calls
+	 * GET /businessLogic-service/person/{idPerson}/current-health This method calls
 	 * a getPerson method in Storage Services Module
 	 * 
 	 * @return
@@ -391,7 +391,7 @@ public class PersonResource {
 	}
 
 	/**
-	 * GET /business-service/person/{idPerson}/history-health This method calls
+	 * GET /businessLogic-service/person/{idPerson}/history-health This method calls
 	 * a getHistoryHealth method in Storage Services Module
 	 * 
 	 * @return
@@ -476,7 +476,7 @@ public class PersonResource {
 	// ******************* MEASURE ***********************
 
 	/**
-	 * GET /business-service/person/{idPerson}/measure/{measureName} This
+	 * GET /businessLogic-service/person/{idPerson}/measure/{measureName} This
 	 * method calls a getMeasure method in Storage Services Module
 	 * 
 	 * @return
@@ -557,10 +557,11 @@ public class PersonResource {
 		}
 	}
 
+	
 	// ******************* GOAL ***********************
 
 	/**
-	 * GET /business-service/person/{idPerson}/goal This method calls a
+	 * GET /businessLogic-service/person/{idPerson}/goal This method calls a
 	 * getGoalList method in Storage Services Module
 	 * 
 	 * @return
@@ -615,7 +616,7 @@ public class PersonResource {
 	}
 
 	/**
-	 * GET /business-service/person/{idPerson}/comparison-value/{measureName} 
+	 * GET /businessLogic-service/person/{idPerson}/comparison-value/{measureName} 
 	 * This method calls a getPerson method in Storage Services Module
 	 * @param idPerson
 	 * @param measureName
@@ -661,7 +662,8 @@ public class PersonResource {
 
 			// person json obj
 			JSONObject obj = new JSONObject(result.toString());
-
+			JSONObject measureTarget = null;
+			
 			// GETTING CURRENT MEASURE LIST FOR A SPECIFIED PERSON
 			// currentHealth json obj - measure json array
 			JSONArray measureArr = (JSONArray) obj.getJSONObject(
@@ -669,40 +671,57 @@ public class PersonResource {
 			for (int i = 0; i < measureArr.length(); i++) {
 				if ((measureArr.getJSONObject(i).getString("name"))
 						.equals(measureName)) {
-					String target = measureArr.getJSONObject(i).getString(
-							"name");
-					System.out.println("measureName : " + target);
-					if (target.equals("heart rate") || target.equals("steps")) {
-						currentMeasureValueInt = measureArr.getJSONObject(i)
-								.getInt("value");
-						System.out.println("measure-value: "
-								+ currentMeasureValueInt);
-					} else {
-						currentMeasureValueDouble = measureArr.getJSONObject(i)
-								.getDouble("value");
-						System.out.println("measure-value: "
-								+ currentMeasureValueDouble);
-					}
+					measureTarget = measureArr.getJSONObject(i);
 				}
 			}
 
+			xmlBuild = "<comparison-information>";
+			
+			if(measureTarget == null){
+				xmlBuild += "<measure>" + measureName + " don't exist </measure>";
+			}else{
+				if (measureTarget.getString("name").equals("heart rate") || measureTarget.getString("name").equals("steps")) {
+					currentMeasureValueInt = measureTarget.getInt("value");
+					System.out.println("measure-value: "
+							+ currentMeasureValueInt);
+				} else {
+					currentMeasureValueDouble = measureTarget.getDouble("value");
+					System.out.println("measure-value: "
+							+ currentMeasureValueDouble);
+				}
+			}
+			
 			// GETTING GOAL LIST FOR A SPECIFIED PERSON
 			// goals json obj - goal json array
 			JSONArray goalArr = (JSONArray) obj.getJSONObject("goals")
 					.getJSONArray("goal");
+			JSONObject goalTarget = null;
+			
 			for (int i = 0; i < goalArr.length(); i++) {
 				if ((goalArr.getJSONObject(i).getString("type"))
 						.equals(measureName)) {
-					String target = goalArr.getJSONObject(i).getString("type");
-					System.out.println("goalType : " + target);
-					if (target.equals("heart rate") || target.equals("steps")) {
-						goalValueInt = goalArr.getJSONObject(i).getInt("value");
-						System.out.println("goal-value: " + goalValueInt);
-					} else {
-						goalValueDouble = goalArr.getJSONObject(i).getDouble(
-								"value");
-						System.out.println("goal-value: " + goalValueDouble);
-					}
+					goalTarget = goalArr.getJSONObject(i);	
+				}
+			}
+			
+			if(goalTarget == null){
+				xmlBuild += "<goal>" + measureName + " don't exist </goal>";
+				xmlBuild += "</comparison-information>";
+
+				System.out.println(prettyXMLPrint(xmlBuild));
+
+				JSONObject xmlJSONObj = XML.toJSONObject(xmlBuild);
+				String jsonPrettyPrintString = xmlJSONObj.toString(4);
+
+				return Response.ok(jsonPrettyPrintString).build();
+
+			}else{
+				if (goalTarget.getString("type").equals("heart rate") || goalTarget.getString("type").equals("steps")) {
+					goalValueInt = goalTarget.getInt("value");
+					System.out.println("goal-value: " + goalValueInt);
+				} else {
+					goalValueDouble = goalTarget.getDouble("value");
+					System.out.println("goal-value: " + goalValueDouble);
 				}
 			}
 
@@ -738,9 +757,8 @@ public class PersonResource {
 					comparison = "ko";
 				}
 			}
-			System.out.println("comparison: " + comparison);
 
-			xmlBuild = "<comparison-information>";
+			//xmlBuild = "<comparison-information>";
 			xmlBuild += "<measure>" + measureName + "</measure>";
 
 			if (measureName.equals("heart rate") || measureName.equals("steps")) {
@@ -772,7 +790,7 @@ public class PersonResource {
 	}
 
 	/**
-	 * GET /business-service/person/{idPerson}/motivational-goal/{measureName} 
+	 * GET /businessLogic-service/person/{idPerson}/motivational-goal/{measureName} 
 	 * This method calls a getPerson method in Storage Services Module
 	 * @param idPerson
 	 * @param measureName
@@ -874,7 +892,7 @@ public class PersonResource {
 	}
 
 	/**
-	 * GET /business-service/person/{idPerson}/motivation-health/{measureName} 
+	 * GET /businessLogic-service/person/{idPerson}/motivation-health/{measureName} 
 	 * This method calls a getPerson method in Storage Services Module
 	 * @param idPerson
 	 * @param measureName
