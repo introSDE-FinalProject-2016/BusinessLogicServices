@@ -9,7 +9,7 @@ import javax.ws.rs.core.UriInfo;
 
 @Stateless
 @LocalBean
-@Path("/business-service")
+@Path("/businessLogic-service")
 public class CollectionResources {
 
 	@Context
