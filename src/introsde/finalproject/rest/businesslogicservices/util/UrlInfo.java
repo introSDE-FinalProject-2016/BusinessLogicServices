@@ -4,7 +4,7 @@ public class UrlInfo {
 	
 	public UrlInfo() {}
 	
-	static final String businessLogicUrl = "http://127.0.1.1:5700/sdelab";
+	static final String businessLogicUrl = "http://127.0.1.1:5700/sdelab/businessLogic-service";
 	static final String storageUrl = "http://127.0.1.1:5701/sdelab/storage-service";
 	
 	/**
