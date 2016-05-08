@@ -65,7 +65,7 @@ public class MeasureDefinitionResource {
 	}
 
 	/**
-	 * GET /business-service/measureDefinition 
+	 * GET /businessLogic-service/measureDefinition 
 	 * This method calls a getMeasureDefinition method in
 	 * Storage Services Module
 	 * 
