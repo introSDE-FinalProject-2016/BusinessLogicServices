@@ -996,14 +996,14 @@ public class PersonResource {
 		// his author
 		String[] motivationsHealth = {
 				"Our health always seems much more valuable after we lose it.",
-				"A man’s health can be judged by which he takes two at a time – pills or stairs.",
+				"A man's health can be judged by which he takes two at a time - pills or stairs.",
 				"Living a healthy lifestyle will only deprive you of poor health, lethargy, and fat.",
 				"Health is a state of complete physical, mental and social well-being, and not merely the absence of disease or infirmity.",
 				"Those who think they have not time for bodily exercise will sooner or later have to find time for illness.",
-				"Movement is a medicine for creating change in a person’s physical, emotional, and mental states.",
-				"If it weren’t for the fact that the TV set and the refrigerator are so far apart, some of us wouldn’t get any exercise at all.",
+				"Movement is a medicine for creating change in a person's physical, emotional, and mental states.",
+				"If it weren't for the fact that the TV set and the refrigerator are so far apart, some of us wouldn't get any exercise at all.",
 				"Too many people confine their exercise to jumping to conclusions, running up bills, stretching the truth, bending over backwards, lying down on the job, sidestepping responsibility and pushing their luck.",
-				"Fitness – If it came in a bottle, everybody would have a great body.",
+				"Fitness - If it came in a bottle, everybody would have a great body.",
 				"Walking is the best possible exercise. Habituate yourself to walk very far.",
 				"Walking: the most ancient exercise and still the best modern exercise." };
 
@@ -1031,12 +1031,12 @@ public class PersonResource {
 		String[] motivationsGoal = {
 				"A goal without a plan is just a wish.",
 				"Nothing can stop the man with the right mental attitude from achieving his goal; nothing on earth can help the man with the wrong mental attitude.",
-				"If you want to accomplish anything in life, you can’t just sit back and hope it will happen. You’ve got to make it happen.",
+				"If you want to accomplish anything in life, you can't just sit back and hope it will happen. You've got to make it happen.",
 				"You must have long-range goals to keep you from being frustrated by short-range failures.",
-				"If what you are doing is not moving you towards your goals, then it’s moving you away from your goals.",
+				"If what you are doing is not moving you towards your goals, then it's moving you away from your goals.",
 				"People with clear, written goals, accomplish far more in a shorter period of time than people without them could ever imagine.",
 				"You cannot expect to achieve new goals or move beyond your present circumstances unless you change.",
-				"This one step – choosing a goal and sticking to it – changes everything.",
+				"This one step - choosing a goal and sticking to it - changes everything.",
 				"Your goals, minus your doubts, equal your reality." };
 
 		String[] authors = { "Larry Elder", "Thomas Jefferson", "Chuck Norris",
@@ -1047,6 +1047,8 @@ public class PersonResource {
 		JSONObject objInner;
 		JSONArray arr = new JSONArray();
 		for (int i = 0; i < motivationsGoal.length; i++) {
+			//String sMeasure = motivationsGoal[i];
+			//String tMeasure = sMeasure.replaceAll("", "-");
 			objInner = new JSONObject();
 			objInner.put("motivation", motivationsGoal[i]);
 			objInner.put("author", authors[i]);
