@@ -641,10 +641,10 @@ public class PersonResource {
 			String xmlBuild = "";
 			String comparison = "";
 
-			double currentMeasureValueDouble = -1.;
+			double measureValueDouble = -1.;
 			double goalValueDouble = -1.;
 
-			int currentMeasureValueInt = -1;
+			int measureValueInt = -1;
 			int goalValueInt = -1;
 
 			DefaultHttpClient client = new DefaultHttpClient();
@@ -681,13 +681,13 @@ public class PersonResource {
 				xmlBuild += "<measure>" + measureName + " don't exist </measure>";
 			}else{
 				if (measureTarget.getString("name").equals("heart rate") || measureTarget.getString("name").equals("steps")) {
-					currentMeasureValueInt = measureTarget.getInt("value");
+					measureValueInt = measureTarget.getInt("value");
 					System.out.println("measure-value: "
-							+ currentMeasureValueInt);
+							+ measureValueInt);
 				} else {
-					currentMeasureValueDouble = measureTarget.getDouble("value");
+					measureValueDouble = measureTarget.getDouble("value");
 					System.out.println("measure-value: "
-							+ currentMeasureValueDouble);
+							+ measureValueDouble);
 				}
 			}
 			
@@ -728,30 +728,30 @@ public class PersonResource {
 			// COMPARISON
 			switch (measureName) {
 			case "heart rate":
-				if (currentMeasureValueInt == -1 || goalValueInt == -1) {
+				if (measureValueInt == -1 || goalValueInt == -1) {
 					return Response.status(404).build();
 				}
-				if (currentMeasureValueInt >= goalValueInt) {
+				if (measureValueInt >= goalValueInt) {
 					comparison = "ok";
 				} else {
 					comparison = "ko";
 				}
 				break;
 			case "steps":
-				if (currentMeasureValueInt == -1 || goalValueInt == -1) {
+				if (measureValueInt == -1 || goalValueInt == -1) {
 					return Response.status(404).build();
 				}
-				if (currentMeasureValueInt >= goalValueInt) {
+				if (measureValueInt >= goalValueInt) {
 					comparison = "ok";
 				} else {
 					comparison = "ko";
 				}
 				break;
 			default:
-				if (currentMeasureValueDouble == -1. || goalValueDouble == -1.) {
+				if (measureValueDouble == -1. || goalValueDouble == -1.) {
 					return Response.status(404).build();
 				}
-				if (currentMeasureValueDouble >= goalValueDouble) {
+				if (measureValueDouble >= goalValueDouble) {
 					comparison = "ok";
 				} else {
 					comparison = "ko";
@@ -762,12 +762,12 @@ public class PersonResource {
 			xmlBuild += "<measure>" + measureName + "</measure>";
 
 			if (measureName.equals("heart rate") || measureName.equals("steps")) {
-				xmlBuild += "<currentMeasureValue>" + currentMeasureValueInt
-						+ "</currentMeasureValue>";
+				xmlBuild += "<measureValue>" + measureValueInt
+						+ "</measureValue>";
 				xmlBuild += "<goalValue>" + goalValueInt + "</goalValue>";
 			} else {
-				xmlBuild += "<currentMeasureValue>" + currentMeasureValueDouble
-						+ "</currentMeasureValue>";
+				xmlBuild += "<measureValue>" + measureValueDouble
+						+ "</measureValue>";
 				xmlBuild += "<goalValue>" + goalValueDouble + "</goalValue>";
 			}
 
