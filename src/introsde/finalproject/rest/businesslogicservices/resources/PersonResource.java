@@ -357,9 +357,9 @@ public class PersonResource {
 					xmlResponse += "<measure>";
 					xmlResponse += "<id>"
 							+ measureArr.getJSONObject(j).get("mid") + "</id>";
-					/*xmlResponse += "<name>"
+					xmlResponse += "<name>"
 							+ measureArr.getJSONObject(j).get("name")
-							+ "</name>";*/
+							+ "</name>";
 					xmlResponse += "<value>"
 							+ measureArr.getJSONObject(j).get("value")
 							+ "</value>";
@@ -441,9 +441,9 @@ public class PersonResource {
 					xmlResponse += "<measure>";
 					xmlResponse += "<id>"
 							+ measureArr.getJSONObject(j).get("mid") + "</id>";
-					/*xmlResponse += "<name>"
+					xmlResponse += "<name>"
 							+ measureArr.getJSONObject(j).get("name")
-							+ "</name>";*/
+							+ "</name>";
 					xmlResponse += "<value>"
 							+ measureArr.getJSONObject(j).get("value")
 							+ "</value>";
