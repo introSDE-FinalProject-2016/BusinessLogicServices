@@ -349,11 +349,12 @@ public class PersonResource {
 				JSONArray measureArr = currentObj.getJSONArray("measure");
 				for (int j = 0; j < measureArr.length(); j++) {
 					
-					String sMeasure = measureArr.getJSONObject(j).getString("name");
-					String tMeasure = sMeasure.replaceAll(" ", "-");
+					//String sMeasure = measureArr.getJSONObject(j).getString("name");
+					//String tMeasure = sMeasure.replaceAll(" ", "-");
 					
 					// measure array json
-					xmlResponse += "<" + tMeasure + ">";
+					//xmlResponse += "<" + tMeasure + ">";
+					xmlResponse += "<measure>";
 					xmlResponse += "<id>"
 							+ measureArr.getJSONObject(j).get("mid") + "</id>";
 					/*xmlResponse += "<name>"
@@ -365,7 +366,8 @@ public class PersonResource {
 					xmlResponse += "<created>"
 							+ measureArr.getJSONObject(j).get("created")
 							+ "</created>";
-					xmlResponse += "</" + tMeasure + ">";
+					//xmlResponse += "</" + tMeasure + ">";
+					xmlResponse += "</measure>";
 				}
 				xmlResponse += "</currentHealth-profile>";
 
@@ -431,11 +433,12 @@ public class PersonResource {
 				JSONArray measureArr = (JSONArray) obj.getJSONArray("measure");
 				for (int j = 0; j < measureArr.length(); j++) {
 
-					String sMeasure = measureArr.getJSONObject(j).getString("name");
-					String tMeasure = sMeasure.replaceAll(" ", "-");
+					//String sMeasure = measureArr.getJSONObject(j).getString("name");
+					//String tMeasure = sMeasure.replaceAll(" ", "-");
 					
 					// measure array json
-					xmlResponse += "<" + tMeasure + ">";
+					//xmlResponse += "<" + tMeasure + ">";
+					xmlResponse += "<measure>";
 					xmlResponse += "<id>"
 							+ measureArr.getJSONObject(j).get("mid") + "</id>";
 					/*xmlResponse += "<name>"
@@ -447,7 +450,8 @@ public class PersonResource {
 					xmlResponse += "<created>"
 							+ measureArr.getJSONObject(j).get("created")
 							+ "</created>";
-					xmlResponse += "</" + tMeasure + ">";
+					//xmlResponse += "</" + tMeasure + ">";
+					xmlResponse += "</measure>";
 				}
 
 				xmlResponse += "</historyHealth-profile>";
@@ -520,7 +524,8 @@ public class PersonResource {
 				for (int j = 0; j < measureArr.length(); j++) {
 
 					// measure array json
-					xmlResponse += "<" + measureName + ">";
+					//xmlResponse += "<" + measureName + ">";
+					xmlResponse += "<measure>";
 					xmlResponse += "<mid>"
 							+ measureArr.getJSONObject(j).get("mid") + "</mid>";
 					xmlResponse += "<name>"
@@ -532,7 +537,8 @@ public class PersonResource {
 					xmlResponse += "<created>"
 							+ measureArr.getJSONObject(j).get("created")
 							+ "</created>";
-					xmlResponse += "</" + measureName + ">";
+					//xmlResponse += "</" + measureName + ">";
+					xmlResponse += "</measure>";
 				}
 
 				xmlResponse += "</measure-profile>";
