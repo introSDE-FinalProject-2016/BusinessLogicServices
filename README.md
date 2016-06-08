@@ -1,6 +1,6 @@
 # BusinessLogicServices
 
-The Business Logic Service is a RestFul Web Service. This layer is responsible for all kinds of data manipolation, decision, making, calculations, etc. It receives request from the [User Interface Layer](https://github.com/introSDE-FinalProject-2016/Telegram-Bot) and the [Process Centric Services](https://github.com/introSDE-FinalProject-2016/ProcessCentricServices) module; and gets data from the [Storage Services](https://github.com/introSDE-FinalProject-2016/StorageServices) module to send results back.
+The Business Logic Service is a RestFul Web Service. This layer is responsible for all kinds of data manipolation, decision, making, calculations, etc. It receives request from the [User Interface](https://github.com/introSDE-FinalProject-2016/Telegram-Bot) layer and the [Process Centric Services](https://github.com/introSDE-FinalProject-2016/ProcessCentricServices) module; and gets data from the [Storage Services](https://github.com/introSDE-FinalProject-2016/StorageServices) module to send results back.
 
 
 [API Documentation](http://docs.businesslogicservices.apiary.io/#)  
