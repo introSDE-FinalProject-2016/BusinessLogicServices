@@ -486,7 +486,7 @@ public class PersonResource {
 	 * @return
 	 */
 	@POST
-	@Path("{pid}/goal")
+	@Path("{pid}/measure")
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Response insertNewMeasure(@PathParam("pid") int idPerson, String inputMeasureJSON) {
