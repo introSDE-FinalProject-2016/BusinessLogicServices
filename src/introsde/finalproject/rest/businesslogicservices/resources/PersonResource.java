@@ -480,6 +480,50 @@ public class PersonResource {
 	// ******************* MEASURE ***********************
 
 	/**
+	 * POST /businessLogic-service/person/idPerson/measure This method calls a createMeasure method in
+	 * Storage Services Module
+	 * 
+	 * @return
+	 */
+	@POST
+	@Path("{pid}/goal")
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public Response insertNewMeasure(@PathParam("pid") int idPerson, String inputMeasureJSON) {
+		try {
+
+			System.out
+					.println("insertNewMeasure: Inserting a new Measure from Storage Services Module in Business Logic Services");
+
+			String path = "/person/" + idPerson + "/measure";
+
+			Client client = ClientBuilder.newClient();
+			WebTarget service = client.target(storageServiceURL + path);
+			Builder builder = service.request(mediaType);
+
+			Response response = builder.post(Entity.json(inputMeasureJSON));
+
+			String result = response.readEntity(String.class);
+
+			if (response.getStatus() != 201) {
+				System.out
+						.println("Storage Service Error response.getStatus() != 201");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(externalErrorMessage(response.toString()))
+						.build();
+			} else {
+				return Response.ok(result).build();
+			}
+		} catch (Exception e) {
+			System.out
+					.println("Business Logic Service Error catch response.getStatus() != 200");
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(errorMessage(e)).build();
+		}
+	}
+	
+	
+	/**
 	 * GET /businessLogic-service/person/{idPerson}/measure/{measureName} This
 	 * method calls a getMeasure method in Storage Services Module
 	 * 
