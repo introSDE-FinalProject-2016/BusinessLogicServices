@@ -36,9 +36,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.glassfish.jersey.client.ClientConfig;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
@@ -326,6 +328,79 @@ public class PersonResource {
 			String path = "/person/" + idPerson;
 			String xmlResponse = null;
 
+			ClientConfig clientConfig = new ClientConfig();
+			Client client = ClientBuilder.newClient(clientConfig);
+			
+			WebTarget service = client.target(storageServiceURL);
+			Response response = service.path(path).request().accept(mediaType)
+					.get(Response.class);
+	    	
+	    	String result = response.readEntity(String.class);
+			
+			JSONObject obj = new JSONObject(result);
+
+
+			if (response.getStatus() == 200) {
+
+				xmlResponse = "<currentHealth-profile>";
+				JSONObject currentObj = (JSONObject) obj.get("currentHealth");
+				
+				JSONArray measureArr = (JSONArray)currentObj.getJSONArray("measure");
+				for (int j = 0; j < measureArr.length(); j++) {
+					
+					//String sMeasure = measureArr.getJSONObject(j).getString("name");
+					//String tMeasure = sMeasure.replaceAll(" ", "-");
+					
+					// measure array json
+					//xmlResponse += "<" + tMeasure + ">";
+					xmlResponse += "<measure>";
+					xmlResponse += "<id>"
+							+ measureArr.getJSONObject(j).get("mid") + "</id>";
+					xmlResponse += "<name>"
+							+ measureArr.getJSONObject(j).get("name")
+							+ "</name>";
+					xmlResponse += "<value>"
+							+ measureArr.getJSONObject(j).get("value")
+							+ "</value>";
+					xmlResponse += "<created>"
+							+ measureArr.getJSONObject(j).get("created")
+							+ "</created>";
+					//xmlResponse += "</" + tMeasure + ">";
+					xmlResponse += "</measure>";
+				}
+				xmlResponse += "</currentHealth-profile>";
+
+				System.out.println(prettyXMLPrint(xmlResponse));
+
+				JSONObject xmlJSONObj = XML.toJSONObject(xmlResponse);
+				String jsonPrettyPrintString = xmlJSONObj.toString(4);
+				return Response.ok(jsonPrettyPrintString).build();
+
+			} else {
+				System.out
+						.println("Storage Service Error response.getStatus() != 200");
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(externalErrorMessage(response.toString()))
+						.build();
+			}
+		} catch (Exception e) {
+			System.out
+					.println("Business Logic Service Error catch response.getStatus() != 200");
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(errorMessage(e)).build();
+		}
+	}
+
+	/*public Response readCurrentHealthDetails(@PathParam("pid") int idPerson) {
+		try {
+			System.out
+					.println("readCurrentHealthDetails: Reading list of all current measures for a person with "
+							+ idPerson
+							+ " from Storage Services Module in Business Logic Services...");
+
+			String path = "/person/" + idPerson;
+			String xmlResponse = null;
+
 			DefaultHttpClient client = new DefaultHttpClient();
 			HttpGet request = new HttpGet(storageServiceURL + path);
 			HttpResponse response = client.execute(request);
@@ -391,7 +466,7 @@ public class PersonResource {
 					.entity(errorMessage(e)).build();
 		}
 	}
-
+*/
 	/**
 	 * GET /businessLogic-service/person/{idPerson}/history-health This method calls
 	 * a getHistoryHealth method in Storage Services Module
@@ -431,7 +506,7 @@ public class PersonResource {
 				xmlResponse = "<historyHealth-profile>";
 
 				JSONArray measureArr = (JSONArray) obj.getJSONArray("measure");
-				for (int j = 0; j <=measureArr.length(); j++) {
+				for (int j = 0; j <measureArr.length(); j++) {
 
 					//String sMeasure = measureArr.getJSONObject(j).getString("name");
 					//String tMeasure = sMeasure.replaceAll(" ", "-");
