@@ -345,8 +345,8 @@ public class PersonResource {
 
 				xmlResponse = "<currentHealth-profile>";
 				JSONObject currentObj = (JSONObject) obj.get("currentHealth");
-
-				JSONArray measureArr = currentObj.getJSONArray("measure");
+				
+				JSONArray measureArr = (JSONArray)currentObj.getJSONArray("measure");
 				for (int j = 0; j < measureArr.length(); j++) {
 					
 					//String sMeasure = measureArr.getJSONObject(j).getString("name");
