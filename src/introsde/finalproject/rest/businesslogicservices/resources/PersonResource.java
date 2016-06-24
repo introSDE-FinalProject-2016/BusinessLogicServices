@@ -431,7 +431,7 @@ public class PersonResource {
 				xmlResponse = "<historyHealth-profile>";
 
 				JSONArray measureArr = (JSONArray) obj.getJSONArray("measure");
-				for (int j = 0; j < measureArr.length(); j++) {
+				for (int j = 0; j <=measureArr.length(); j++) {
 
 					//String sMeasure = measureArr.getJSONObject(j).getString("name");
 					//String tMeasure = sMeasure.replaceAll(" ", "-");
