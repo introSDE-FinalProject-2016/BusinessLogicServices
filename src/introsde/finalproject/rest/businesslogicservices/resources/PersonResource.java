@@ -417,35 +417,23 @@ public class PersonResource {
 			if (response.getStatusLine().getStatusCode() == 200) {
 				
 				JSONArray measureArr = (JSONArray) obj.getJSONArray("measure");				
+				System.out.println("MeasureLength: " + measureArr.length());
 				
-				if(measureArr.length() != 0){
-					System.out.println("MeasureLength: " + measureArr.length());
-					
-					for (int j = 0; j < measureArr.length(); j++) {
-						Measure m = new Measure(measureArr.getJSONObject(j).getInt("mid"), 
-												measureArr.getJSONObject(j).getString("name"), 
-												measureArr.getJSONObject(j).getString("value"), 
-												measureArr.getJSONObject(j).getString("created"));
-						measureList.add(j, m);
-					}
-					
-					hmwrapper.setHistoryMeasureList(measureList);
-					return hmwrapper;
-					
-				}else {
-					
-					System.out.println("Storage Service Error response.getStatus() != 200");
-					System.out.println("Didn't find any Person with  id = " + idPerson);
-					hmwrapper.setHistoryMeasureList(measureList);
-					return hmwrapper;
+				for (int j = 0; j < measureArr.length(); j++) {
+					Measure m = new Measure(measureArr.getJSONObject(j).getInt("mid"), 
+											measureArr.getJSONObject(j).getString("name"), 
+											measureArr.getJSONObject(j).getString("value"), 
+											measureArr.getJSONObject(j).getString("created"));
+					measureList.add(j, m);
 				}
-				
-			} else {
-				return null;
 			}
 			
+			hmwrapper.setHistoryMeasureList(measureList);
+			return hmwrapper;
+			
 		} catch (Exception e) {
-			System.out.println("Business Logic Service Error catch response.getStatus() != 200");
+			System.out.println("Storage Service Error response.getStatus() != 200");
+			System.out.println("Didn't find any Person with  id = " + idPerson);
 			hmwrapper.setHistoryMeasureList(measureList);
 			return hmwrapper;
 		}
