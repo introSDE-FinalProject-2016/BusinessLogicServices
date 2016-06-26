@@ -49,4 +49,8 @@ public class Measure {
 		this.created = created;
 	}
 
+	public String toString() {
+		return "Measure ( " + mid + ", " + name + ", "
+				+ value + ", " + created + " )";
+	}
 }
