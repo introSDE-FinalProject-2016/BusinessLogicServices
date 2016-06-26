@@ -756,7 +756,7 @@ public class PersonResource {
 	 * Return the measure with {idMeasure}
 	 * @return Measure a measure
 	 */
-	@GET
+	/*@GET
 	@Path("{pid}/measure/{mid}")
 	@Produces( MediaType.APPLICATION_JSON )
 	public Measure getMeasureById(@PathParam("pid") int idPerson, @PathParam("mid") int idMeasure) {
@@ -791,7 +791,7 @@ public class PersonResource {
 			}
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * GET /person/{personId}/measure/{measureId}/check
@@ -801,7 +801,7 @@ public class PersonResource {
 	 * 
 	 */
 	/*@GET
-	@Path("/measure/{mid}/check")
+	@Path("{pid}/measure/{mid}/check")
 	@Produces( MediaType.APPLICATION_JSON )
 	public Boolean checkMeasureWithTarget(@PathParam("measureId") BigInteger measureId) throws ParseException {
 		System.out.println("checkMeasureWithTarget: Checking measure "+ measureId +" for idPerson "+ this.idPerson +"...");
