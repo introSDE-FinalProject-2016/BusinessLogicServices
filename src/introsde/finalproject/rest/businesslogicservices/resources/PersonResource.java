@@ -389,6 +389,8 @@ public class PersonResource {
 	@Path("{pid}/history-health")
 	@Produces(MediaType.APPLICATION_JSON)
 	public HistoryMeasureList readHistoryHealthDetails(@PathParam("pid") int idPerson) {
+		List<Measure> measureList = new ArrayList<Measure>();
+		HistoryMeasureList hmwrapper = new HistoryMeasureList();
 		try {
 			System.out
 					.println("readHistoryHealthDetails: Reading list of all history measures for a person with "
@@ -412,14 +414,13 @@ public class PersonResource {
 
 			JSONObject obj = new JSONObject(result.toString());
 			
-			List<Measure> measureList = new ArrayList<Measure>();
-			HistoryMeasureList hmwrapper = new HistoryMeasureList();
-
 			if (response.getStatusLine().getStatusCode() == 200) {
 				
 				JSONArray measureArr = (JSONArray) obj.getJSONArray("measure");				
 				
 				if(measureArr.length() != 0){
+					System.out.println("MeasureLength: " + measureArr.length());
+					
 					for (int j = 0; j < measureArr.length(); j++) {
 						Measure m = new Measure(measureArr.getJSONObject(j).getInt("mid"), 
 												measureArr.getJSONObject(j).getString("name"), 
@@ -445,7 +446,8 @@ public class PersonResource {
 			
 		} catch (Exception e) {
 			System.out.println("Business Logic Service Error catch response.getStatus() != 200");
-			return null;
+			hmwrapper.setHistoryMeasureList(measureList);
+			return hmwrapper;
 		}
 	}
 
