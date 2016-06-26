@@ -1,11 +1,15 @@
 package introsde.finalproject.rest.businesslogicservices.resources;
 
 import introsde.finalproject.rest.businesslogicservices.util.UrlInfo;
+import introsde.finalproject.rest.businesslogicservices.wrapper.CurrentMeasureList;
+import introsde.finalproject.rest.businesslogicservices.model.Measure;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.ejb.LocalBean;
@@ -36,7 +40,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -318,7 +321,7 @@ public class PersonResource {
 	@GET
 	@Path("{pid}/current-health")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response readCurrentHealthDetails(@PathParam("pid") int idPerson) {
+	public CurrentMeasureList readCurrentHealthDetails(@PathParam("pid") int idPerson) {
 		try {
 			System.out
 					.println("readCurrentHealthDetails: Reading list of all current measures for a person with "
@@ -326,7 +329,6 @@ public class PersonResource {
 							+ " from Storage Services Module in Business Logic Services...");
 
 			String path = "/person/" + idPerson;
-			String xmlResponse = null;
 
 			ClientConfig clientConfig = new ClientConfig();
 			Client client = ClientBuilder.newClient(clientConfig);
@@ -339,55 +341,34 @@ public class PersonResource {
 			
 			JSONObject obj = new JSONObject(result);
 
+			List<Measure> measureList = new ArrayList<Measure>();
+			CurrentMeasureList cmwrapper = new CurrentMeasureList();
 
 			if (response.getStatus() == 200) {
 
-				//xmlResponse = "<currentHealth-profile>";
 				JSONObject currentObj = (JSONObject) obj.get("currentHealth");
-				
 				JSONArray measureArr = (JSONArray)currentObj.getJSONArray("measure");
+				
 				for (int j = 0; j < measureArr.length(); j++) {
-					
-					//String sMeasure = measureArr.getJSONObject(j).getString("name");
-					//String tMeasure = sMeasure.replaceAll(" ", "-");
-					
-					// measure array json
-					//xmlResponse += "<" + tMeasure + ">";
-					xmlResponse = "<measure>";
-					xmlResponse += "<id>"
-							+ measureArr.getJSONObject(j).get("mid") + "</id>";
-					xmlResponse += "<name>"
-							+ measureArr.getJSONObject(j).get("name")
-							+ "</name>";
-					xmlResponse += "<value>"
-							+ measureArr.getJSONObject(j).get("value")
-							+ "</value>";
-					xmlResponse += "<created>"
-							+ measureArr.getJSONObject(j).get("created")
-							+ "</created>";
-					//xmlResponse += "</" + tMeasure + ">";
-					xmlResponse += "</measure>";
+					Measure m = new Measure(measureArr.getJSONObject(j).getInt("mid"), 
+											measureArr.getJSONObject(j).getString("name"), 
+											measureArr.getJSONObject(j).getString("value"), 
+											measureArr.getJSONObject(j).getString("created"));
+					measureList.add(j, m);
 				}
-				//xmlResponse += "</currentHealth-profile>";
-
-				System.out.println(prettyXMLPrint(xmlResponse));
-
-				JSONObject xmlJSONObj = XML.toJSONObject(xmlResponse);
-				String jsonPrettyPrintString = xmlJSONObj.toString(4);
-				return Response.ok(jsonPrettyPrintString).build();
+				
+				cmwrapper.setCurrentMeasureList(measureList);
+				return cmwrapper;
 
 			} else {
-				System.out
-						.println("Storage Service Error response.getStatus() != 200");
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-						.entity(externalErrorMessage(response.toString()))
-						.build();
+				System.out.println("Storage Service Error response.getStatus() != 200");
+				System.out.println("Didn't find any Person with  id = " + idPerson);
+				cmwrapper.setCurrentMeasureList(measureList);
+				return cmwrapper;
 			}
 		} catch (Exception e) {
-			System.out
-					.println("Business Logic Service Error catch response.getStatus() != 200");
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(errorMessage(e)).build();
+			System.out.println("Business Logic Service Error catch response.getStatus() != 200");
+			return null;
 		}
 	}
 
