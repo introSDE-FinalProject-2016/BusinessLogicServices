@@ -65,7 +65,9 @@ public class PersonResource {
 	private String storageServiceURL;
 
 	private static String mediaType = MediaType.APPLICATION_JSON;
-
+	
+	ClientConfig clientConfig = new ClientConfig();
+	
 	/**
 	 * initialize the connection with the Storage Service (SS)
 	 */
@@ -206,7 +208,7 @@ public class PersonResource {
 
 			String path = "/person";
 
-			Client client = ClientBuilder.newClient();
+			Client client = ClientBuilder.newClient(clientConfig);
 			WebTarget service = client.target(storageServiceURL + path);
 			Builder builder = service.request(mediaType);
 
@@ -249,7 +251,7 @@ public class PersonResource {
 
 			String path = "/person/" + idPerson;
 
-			Client client = ClientBuilder.newClient();
+			Client client = ClientBuilder.newClient(clientConfig);
 			WebTarget webTarget = client.target(storageServiceURL + path);
 			Builder builder = webTarget.request(mediaType);
 
@@ -290,7 +292,8 @@ public class PersonResource {
 
 			String path = "/person/" + idPerson;
 
-			Client client = ClientBuilder.newClient();
+			
+			Client client = ClientBuilder.newClient(clientConfig);
 			WebTarget webTarget = client.target(storageServiceURL + path);
 			Builder builder = webTarget.request(mediaType);
 
@@ -333,9 +336,7 @@ public class PersonResource {
 
 			String path = "/person/" + idPerson;
 
-			ClientConfig clientConfig = new ClientConfig();
 			Client client = ClientBuilder.newClient(clientConfig);
-			
 			WebTarget service = client.target(storageServiceURL);
 			Response response = service.path(path).request().accept(mediaType)
 					.get(Response.class);
@@ -466,7 +467,7 @@ public class PersonResource {
 
 			String path = "/person/" + idPerson + "/measure";
 
-			Client client = ClientBuilder.newClient();
+			Client client = ClientBuilder.newClient(clientConfig);
 			WebTarget service = client.target(storageServiceURL + path);
 			Builder builder = service.request(mediaType);
 
@@ -724,7 +725,7 @@ public class PersonResource {
 
 			String path = "/person/" + idPerson + "/goal";
 
-			Client client = ClientBuilder.newClient();
+			Client client = ClientBuilder.newClient(clientConfig);
 			WebTarget service = client.target(storageServiceURL + path);
 			Builder builder = service.request(mediaType);
 
@@ -763,9 +764,8 @@ public class PersonResource {
 		
 		String path = "/person/" + idPerson + "/historyHealth";
 
-		Client client = ClientBuilder.newClient();
+		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget service = client.target(storageServiceURL);
-		
 		Response response = service.path(path).request().accept(mediaType)
 				.get(Response.class);
 		
