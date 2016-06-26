@@ -800,7 +800,7 @@ public class PersonResource {
 	 * @throws ParseException 
 	 * 
 	 */
-	@GET
+	/*@GET
 	@Path("/measure/{mid}/check")
 	@Produces( MediaType.APPLICATION_JSON )
 	public Boolean checkMeasureWithTarget(@PathParam("measureId") BigInteger measureId) throws ParseException {
@@ -829,7 +829,7 @@ public class PersonResource {
 			}
 		}
 		return result;
-	}
+	}*/
 	
 	
 	/**
