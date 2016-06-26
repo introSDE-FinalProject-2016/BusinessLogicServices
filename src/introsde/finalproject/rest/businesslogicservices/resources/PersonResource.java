@@ -509,7 +509,7 @@ public class PersonResource {
 		
 		try {
 			System.out
-					.println("readMeasureHealthDetails: Reading list of all "
+					.println("readMeasureListByMeasureName: Reading list of all "
 							+ measureName
 							+ " for a person with "
 							+ idPerson
@@ -632,6 +632,80 @@ public class PersonResource {
 		}
 	}
 
+	
+	/**
+	 * GET /businessLogic-service/person/{idPerson}/goal/{measureName} This
+	 * method calls a getGoal method in Storage Services Module
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("{pid}/goal/{measureName}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public GoalList readGoalListByMeasureName(@PathParam("pid") int idPerson,
+			@PathParam("measureName") String measureName) {
+		
+		List<Goal> goalList = new ArrayList<Goal>();
+		GoalList glwrapper = new GoalList();
+		
+		try {
+			System.out
+					.println("readGoalListByMeasureName: Reading list of all "
+							+ measureName
+							+ " for a person with "
+							+ idPerson
+							+ " from Storage Services Module in Business Logic Services...");
+
+			String path = "/person/" + idPerson + "/goal/" + measureName;
+			
+			DefaultHttpClient client = new DefaultHttpClient();
+			HttpGet request = new HttpGet(storageServiceURL + path);
+			HttpResponse response = client.execute(request);
+
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					response.getEntity().getContent()));
+
+			StringBuffer result = new StringBuffer();
+			String line = "";
+			while ((line = rd.readLine()) != null) {
+				result.append(line);
+			}
+
+			JSONObject obj = new JSONObject(result.toString());
+			
+			if (response.getStatusLine().getStatusCode() == 200) {
+
+				JSONArray goalArr = (JSONArray) obj.getJSONArray("goal");
+				
+				for (int j = 0; j < goalArr.length(); j++) {
+					Goal g = new Goal(goalArr.getJSONObject(j).getInt("gid"), 
+											goalArr.getJSONObject(j).getString("type"), 
+											goalArr.getJSONObject(j).getString("value"), 
+											goalArr.getJSONObject(j).getString("startDateGoal"),
+											goalArr.getJSONObject(j).getString("endDateGoal"),
+											goalArr.getJSONObject(j).getBoolean("achieved"),
+											goalArr.getJSONObject(j).getString("condition"));
+					goalList.add(j, g);
+				}
+				glwrapper.setGoalList(goalList);
+				
+			}else{
+				System.out.println("Storage Service Error response.getStatus() != 200");
+				System.out.println("Didn't find any Person with  id = " + idPerson);
+				glwrapper.setGoalList(goalList);
+			}
+			
+			return glwrapper;
+			
+		} catch (Exception e) {
+			System.out.println("Business Logic Service Error catch response.getStatus() != 200");
+			System.out.println("Didn't find any Person with  id = " + idPerson);
+			glwrapper.setGoalList(goalList);
+			return glwrapper;
+		}
+	}
+	
+	
 	/**
 	 * POST /businessLogic-service/person/idPerson/goal This method calls a createGoal method in
 	 * Storage Services Module
@@ -674,6 +748,89 @@ public class PersonResource {
 					.entity(errorMessage(e)).build();
 		}
 	}
+	
+	
+	/**
+	 * GET /person/{idPerson}/measure/{idMeasure}
+	 * Return the measure with {idMeasure}
+	 * @return Measure a measure
+	 */
+	@GET
+	@Path("{pid}/measure/{mid}")
+	@Produces( MediaType.APPLICATION_JSON )
+	public Measure getMeasureById(@PathParam("pid") int idPerson, @PathParam("mid") int idMeasure) {
+		System.out.println("getMeasureById: Reading Measures for idPerson "+ idPerson +"...");
+		
+		String path = "/person/" + idPerson + "/historyHealth";
+
+		Client client = ClientBuilder.newClient();
+		WebTarget service = client.target(storageServiceURL);
+		
+		Response response = service.path(path).request().accept(mediaType)
+				.get(Response.class);
+		
+		String result = response.readEntity(String.class);
+		JSONObject obj = new JSONObject(result);
+		
+		List<Measure> measureList = new ArrayList<Measure>();
+		JSONArray measureArr = (JSONArray)obj.getJSONArray("measure");
+		
+		for (int j = 0; j < measureArr.length(); j++) {
+			Measure m = new Measure(measureArr.getJSONObject(j).getInt("mid"), 
+									measureArr.getJSONObject(j).getString("name"), 
+									measureArr.getJSONObject(j).getString("value"), 
+									measureArr.getJSONObject(j).getString("created"));
+			measureList.add(j, m);
+		}
+		
+		for(int i=0; i<measureList.size(); i++){
+			Measure m = measureList.get(i);
+			if(m.getMid() == idMeasure){
+				System.out.println(m.toString());
+				return m;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * GET /person/{personId}/measure/{measureId}/check
+	 *  
+	 * Check if the target is achieved for the measure passed as param
+	 * @throws ParseException 
+	 * 
+	 */
+	@GET
+	@Path("/measure/{mid}/check")
+	@Produces( MediaType.APPLICATION_JSON )
+	public Boolean checkMeasureWithTarget(@PathParam("measureId") BigInteger measureId) throws ParseException {
+		System.out.println("checkMeasureWithTarget: Checking measure "+ measureId +" for idPerson "+ this.idPerson +"...");
+		MeasureType measure = getMeasureById(measureId);
+		ListTargetType listTargets = readTargetsByMeasureDef(measure.getMeasureDefinition().getIdMeasureDef());
+		Boolean result = false;
+		if(listTargets.getTarget().size() > 0){
+			for(TargetType target : listTargets.getTarget()){
+				int count = Integer.compare(Integer.parseInt(measure.getValue()), target.getValue());
+				String cond = target.getConditionTarget().replaceAll("\\s","");
+				//conditionTarget is set and the target is not expired
+				if (target.getConditionTarget() != null && 
+						compareDateWithToday(target.getEndDateTarget()) >= 0 &&
+						target.isAchieved() == false) {
+					if( (cond.equals("<") && count <  0) || (cond.equals("<=") && count <= 0) ||
+						(cond.equals("=") && count == 0) || (cond.equals(">") && count > 0) ||
+						(cond.equals(">=") && count >= 0)){
+						//the target is achieved
+						target.setAchieved(true);
+						updateTarget(target);
+						result = true;
+					}else
+						result = false;
+				}
+			}
+		}
+		return result;
+	}
+	
 	
 	/**
 	 * GET /businessLogic-service/person/{idPerson}/comparison-value/{measureName} 
