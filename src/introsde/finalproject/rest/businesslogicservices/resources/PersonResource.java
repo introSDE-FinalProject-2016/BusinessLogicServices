@@ -178,7 +178,6 @@ public class PersonResource {
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 						.entity(externalErrorMessage(response.toString()))
 						.build();
-				// return Response.status(204).build();
 			}
 
 		} catch (Exception e) {
@@ -389,8 +388,10 @@ public class PersonResource {
 	@Path("{pid}/history-health")
 	@Produces(MediaType.APPLICATION_JSON)
 	public HistoryMeasureList readHistoryHealthDetails(@PathParam("pid") int idPerson) {
+		
 		List<Measure> measureList = new ArrayList<Measure>();
 		HistoryMeasureList hmwrapper = new HistoryMeasureList();
+		
 		try {
 			System.out
 					.println("readHistoryHealthDetails: Reading list of all history measures for a person with "
@@ -426,13 +427,19 @@ public class PersonResource {
 											measureArr.getJSONObject(j).getString("created"));
 					measureList.add(j, m);
 				}
+				
+				hmwrapper.setHistoryMeasureList(measureList);
+				
+			}else{
+				System.out.println("Storage Service Error response.getStatus() != 200");
+				System.out.println("Didn't find any Person with  id = " + idPerson);
+				hmwrapper.setHistoryMeasureList(measureList);	
 			}
 			
-			hmwrapper.setHistoryMeasureList(measureList);
 			return hmwrapper;
 			
 		} catch (Exception e) {
-			System.out.println("Storage Service Error response.getStatus() != 200");
+			System.out.println("Business Logic Service Error catch response.getStatus() != 200");
 			System.out.println("Didn't find any Person with  id = " + idPerson);
 			hmwrapper.setHistoryMeasureList(measureList);
 			return hmwrapper;
@@ -496,6 +503,10 @@ public class PersonResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public MeasureList readMeasureListByMeasureName(@PathParam("pid") int idPerson,
 			@PathParam("measureName") String measureName) {
+		
+		List<Measure> measureList = new ArrayList<Measure>();
+		MeasureList mlwrapper = new MeasureList();
+		
 		try {
 			System.out
 					.println("readMeasureHealthDetails: Reading list of all "
@@ -520,10 +531,7 @@ public class PersonResource {
 			}
 
 			JSONObject obj = new JSONObject(result.toString());
-
-			List<Measure> measureList = new ArrayList<Measure>();
-			MeasureList mlwrapper = new MeasureList();
-
+			
 			if (response.getStatusLine().getStatusCode() == 200) {
 
 				JSONArray measureArr = (JSONArray) obj.getJSONArray("measure");				
@@ -534,21 +542,21 @@ public class PersonResource {
 											measureArr.getJSONObject(j).getString("created"));
 					measureList.add(j, m);
 				}
-				
 				mlwrapper.setMeasureList(measureList);
-				return mlwrapper;
-
-			} else {
 				
+			}else{
 				System.out.println("Storage Service Error response.getStatus() != 200");
 				System.out.println("Didn't find any Person with  id = " + idPerson);
 				mlwrapper.setMeasureList(measureList);
-				return mlwrapper;
 			}
+			
+			return mlwrapper;
 			
 		} catch (Exception e) {
 			System.out.println("Business Logic Service Error catch response.getStatus() != 200");
-			return null;
+			System.out.println("Didn't find any Person with  id = " + idPerson);
+			mlwrapper.setMeasureList(measureList);
+			return mlwrapper;
 		}
 	}
 
@@ -566,6 +574,10 @@ public class PersonResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public GoalList readGoalListDetails(@PathParam("pid") int idPerson) {
+		
+		List<Goal> goalList = new ArrayList<Goal>();
+		GoalList glwrapper = new GoalList();
+		
 		try {
 			System.out
 					.println("readGoalListDetails: Reading list of all goals for Person with "
@@ -589,9 +601,6 @@ public class PersonResource {
 
 			JSONObject obj = new JSONObject(result.toString());
 
-			List<Goal> goalList = new ArrayList<Goal>();
-			GoalList glwrapper = new GoalList();
-
 			if (response.getStatusLine().getStatusCode() == 200) {
 
 				JSONArray goalArr = (JSONArray) obj.getJSONArray("goal");				
@@ -605,43 +614,22 @@ public class PersonResource {
 											goalArr.getJSONObject(j).getString("condition"));
 					goalList.add(j, g);
 				}
-				
 				glwrapper.setGoalList(goalList);
-				return glwrapper;
-
-			} else {
 				
+			}else{
 				System.out.println("Storage Service Error response.getStatus() != 200");
 				System.out.println("Didn't find any Person with  id = " + idPerson);
 				glwrapper.setGoalList(goalList);
-				return glwrapper;
 			}
+			
+			return glwrapper;
 			
 		} catch (Exception e) {
 			System.out.println("Business Logic Service Error catch response.getStatus() != 200");
-			return null;
+			System.out.println("Didn't find any Person with  id = " + idPerson);
+			glwrapper.setGoalList(goalList);
+			return glwrapper;
 		}
-			
-			
-			/*if (response.getStatusLine().getStatusCode() == 200) {
-				return Response.ok(o.toString()).build();
-
-			} else {
-				System.out
-						.println("Storage Service Error response.getStatus() != 200");
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-						.entity(externalErrorMessage(response.toString()))
-						.build();
-				// return Response.status(204).build();
-			}
-
-		} catch (Exception e) {
-			System.out
-					.println("Business Logic Service Error catch response.getStatus() != 200");
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(errorMessage(e)).build();
-		}
-*/
 	}
 
 	/**
