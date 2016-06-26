@@ -342,7 +342,7 @@ public class PersonResource {
 
 			if (response.getStatus() == 200) {
 
-				xmlResponse = "<currentHealth-profile>";
+				//xmlResponse = "<currentHealth-profile>";
 				JSONObject currentObj = (JSONObject) obj.get("currentHealth");
 				
 				JSONArray measureArr = (JSONArray)currentObj.getJSONArray("measure");
@@ -353,7 +353,7 @@ public class PersonResource {
 					
 					// measure array json
 					//xmlResponse += "<" + tMeasure + ">";
-					xmlResponse += "<measure>";
+					xmlResponse = "<measure>";
 					xmlResponse += "<id>"
 							+ measureArr.getJSONObject(j).get("mid") + "</id>";
 					xmlResponse += "<name>"
@@ -368,7 +368,7 @@ public class PersonResource {
 					//xmlResponse += "</" + tMeasure + ">";
 					xmlResponse += "</measure>";
 				}
-				xmlResponse += "</currentHealth-profile>";
+				//xmlResponse += "</currentHealth-profile>";
 
 				System.out.println(prettyXMLPrint(xmlResponse));
 
