@@ -2,27 +2,27 @@ package introsde.finalproject.rest.businesslogicservices.model;
 
 public class Measure {
 
-	private int idMeasure;
+	private int mid;
 	private String name;
 	private String value;
-	private String timestamp;
+	private String created;
 
 	// Constructor measure class
 	public Measure(){}
 	
-	public Measure(int idMeasure, String name, String value, String timestamp) {
-		this.idMeasure = idMeasure;
+	public Measure(int mid, String name, String value, String created) {
+		this.mid = mid;
 		this.name = name;
 		this.value = value;
-		this.timestamp = timestamp;	
+		this.created = created;	
 	}
 
-	public int getIdMeasure() {
-		return idMeasure;
+	public int getMid() {
+		return mid;
 	}
 
-	public void setIdMeasure(int idMeasure) {
-		this.idMeasure = idMeasure;
+	public void setMid(int mid) {
+		this.mid = mid;
 	}
 	
 	public String getName() {
@@ -41,12 +41,12 @@ public class Measure {
 		this.value = value;
 	}
 
-	public String getTimestamp() {
-		return timestamp;
+	public String getCreated() {
+		return created;
 	}
 
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
+	public void setCreated(String created) {
+		this.created = created;
 	}
 
 }
