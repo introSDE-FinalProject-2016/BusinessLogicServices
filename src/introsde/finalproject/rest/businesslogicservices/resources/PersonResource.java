@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -756,7 +757,7 @@ public class PersonResource {
 	 * Return the measure with {idMeasure}
 	 * @return Measure a measure
 	 */
-	/*@GET
+	@GET
 	@Path("{pid}/measure/{mid}")
 	@Produces( MediaType.APPLICATION_JSON )
 	public Measure getMeasureById(@PathParam("pid") int idPerson, @PathParam("mid") int idMeasure) {
@@ -786,12 +787,12 @@ public class PersonResource {
 		for(int i=0; i<measureList.size(); i++){
 			Measure m = measureList.get(i);
 			if(m.getMid() == idMeasure){
-				System.out.println(m.toString());
+				System.out.println("Measure: " + m.toString());
 				return m;
 			}
 		}
 		return null;
-	}*/
+	}
 
 	/**
 	 * GET /person/{personId}/measure/{measureId}/check
@@ -803,19 +804,23 @@ public class PersonResource {
 	/*@GET
 	@Path("{pid}/measure/{mid}/check")
 	@Produces( MediaType.APPLICATION_JSON )
-	public Boolean checkMeasureWithTarget(@PathParam("measureId") BigInteger measureId) throws ParseException {
-		System.out.println("checkMeasureWithTarget: Checking measure "+ measureId +" for idPerson "+ this.idPerson +"...");
-		MeasureType measure = getMeasureById(measureId);
-		ListTargetType listTargets = readTargetsByMeasureDef(measure.getMeasureDefinition().getIdMeasureDef());
+	public Boolean checkMeasureWithTarget(@PathParam("pid") int idPerson, @PathParam("mid") int idMeasure) throws ParseException {
+		System.out.println("checkMeasureWithTarget: Checking measure "+ idMeasure +" for idPerson "+ idPerson +"...");
+		
+		Measure measure = getMeasureById(idPerson, idMeasure);
+		System.out.println(measure.toString());
+		
+		GoalList listGoals = readGoalListByMeasureName(idPerson, measure.getName()); 
+				
 		Boolean result = false;
-		if(listTargets.getTarget().size() > 0){
-			for(TargetType target : listTargets.getTarget()){
-				int count = Integer.compare(Integer.parseInt(measure.getValue()), target.getValue());
-				String cond = target.getConditionTarget().replaceAll("\\s","");
-				//conditionTarget is set and the target is not expired
-				if (target.getConditionTarget() != null && 
-						compareDateWithToday(target.getEndDateTarget()) >= 0 &&
-						target.isAchieved() == false) {
+		if(listGoals.getGoalList().size() > 0){
+			for(Goal goal : listGoals.getGoalList()){
+				int count = Integer.compare(Integer.parseInt(measure.getValue()), Integer.parseInt(goal.getValue()));
+				String cond = goal.getCondition().replaceAll("\\s","");
+				//conditionGoal is set and the target is not expired
+				if (goal.getCondition() != null && 
+						compareDateWithToday(goal.getEndDateGoal()) >= 0 &&
+						goal.isAchieved() == false) {
 					if( (cond.equals("<") && count <  0) || (cond.equals("<=") && count <= 0) ||
 						(cond.equals("=") && count == 0) || (cond.equals(">") && count > 0) ||
 						(cond.equals(">=") && count >= 0)){
