@@ -97,9 +97,9 @@ public class PersonResource {
 	// ******************* PERSON ***********************
 
 	/**
-	 * GET /businessLogic-service/person This method calls a getPersonList method in
-	 * Storage Services Module
+	 * GET /businessLogic-service/person 
 	 * 
+	 * This method calls a getPersonList method in Storage Services Module
 	 * @return
 	 */
 	@GET
@@ -144,9 +144,9 @@ public class PersonResource {
 	}
 
 	/**
-	 * GET /businessLogic-service/person/{idPerson} This method calls a getPerson
-	 * method in Storage Services Module
+	 * GET /businessLogic-service/person/{idPerson} 
 	 * 
+	 * This method calls a getPerson method in Storage Services Module
 	 * @return
 	 */
 	@GET
@@ -197,9 +197,9 @@ public class PersonResource {
 	}
 
 	/**
-	 * POST /businessLogic-service/person This method calls a createPerson method in
-	 * Storage Services Module
+	 * POST /businessLogic-service/person 
 	 * 
+	 * This method calls a createPerson method in Storage Services Module
 	 * @return
 	 */
 	@POST
@@ -239,9 +239,9 @@ public class PersonResource {
 	}
 
 	/**
-	 * PUT /businessLogic-service/person/{idPerson} This method calls a updatePerson
-	 * method in Storage Services Module
+	 * PUT /businessLogic-service/person/{idPerson} 
 	 * 
+	 * This method calls a updatePerson method in Storage Services Module
 	 * @return
 	 */
 	@PUT
@@ -282,9 +282,9 @@ public class PersonResource {
 	}
 
 	/**
-	 * DELETE /businessLogic-service/person/{idPerson} This method calls a
-	 * deletePerson method in Storage Services Module
+	 * DELETE /businessLogic-service/person/{idPerson} 
 	 * 
+	 * This method calls adeletePerson method in Storage Services Module
 	 * @return
 	 */
 	@DELETE
@@ -324,9 +324,9 @@ public class PersonResource {
 	}
 
 	/**
-	 * GET /businessLogic-service/person/{idPerson}/current-health This method calls
-	 * a getPerson method in Storage Services Module
+	 * GET /businessLogic-service/person/{idPerson}/current-health 
 	 * 
+	 * This method calls a getPerson method in Storage Services Module
 	 * @return
 	 */
 	@GET
@@ -385,9 +385,9 @@ public class PersonResource {
 
 	
 	/**
-	 * GET /businessLogic-service/person/{idPerson}/history-health This method calls
-	 * a getHistoryHealth method in Storage Services Module
+	 * GET /businessLogic-service/person/{idPerson}/history-health 
 	 * 
+	 * This method calls a getHistoryHealth method in Storage Services Module
 	 * @return
 	 */
 	@GET
@@ -455,9 +455,9 @@ public class PersonResource {
 	// ******************* MEASURE ***********************
 
 	/**
-	 * POST /businessLogic-service/person/idPerson/measure This method calls a createMeasure method in
-	 * Storage Services Module
+	 * POST /businessLogic-service/person/idPerson/measure 
 	 * 
+	 * This method calls a createMeasure method in Storage Services Module
 	 * @return
 	 */
 	@POST
@@ -499,9 +499,9 @@ public class PersonResource {
 	
 	
 	/**
-	 * GET /businessLogic-service/person/{idPerson}/measure/{measureName} This
-	 * method calls a getMeasure method in Storage Services Module
+	 * GET /businessLogic-service/person/{idPerson}/measure/{measureName} 
 	 * 
+	 * This method calls a getMeasure method in Storage Services Module
 	 * @return
 	 */
 	@GET
@@ -570,9 +570,9 @@ public class PersonResource {
 	// ******************* GOAL ***********************
 
 	/**
-	 * GET /businessLogic-service/person/{idPerson}/goal This method calls a
-	 * getGoalList method in Storage Services Module
+	 * GET /businessLogic-service/person/{idPerson}/goal 
 	 * 
+	 * This method calls a getGoalList method in Storage Services Module
 	 * @return
 	 */
 	@GET
@@ -640,9 +640,9 @@ public class PersonResource {
 
 	
 	/**
-	 * GET /businessLogic-service/person/{idPerson}/goal/{measureName} This
-	 * method calls a getGoal method in Storage Services Module
+	 * GET /businessLogic-service/person/{idPerson}/goal/{measureName} 
 	 * 
+	 * This method calls a getGoal method in Storage Services Module
 	 * @return
 	 */
 	@GET
@@ -713,9 +713,9 @@ public class PersonResource {
 	
 	
 	/**
-	 * POST /businessLogic-service/person/idPerson/goal This method calls a createGoal method in
-	 * Storage Services Module
+	 * POST /businessLogic-service/person/idPerson/goal 
 	 * 
+	 * This method calls a createGoal method in Storage Services Module
 	 * @return
 	 */
 	@POST
@@ -757,8 +757,7 @@ public class PersonResource {
 	
 	
 	/**
-	 * GET /person/{idPerson}/measure/{idMeasure}
-	 * Return the measure with {idMeasure}
+	 * This method returns a measure with {idMeasure}
 	 * @return Measure a measure
 	 */
 	public Measure getMeasureById(int idPerson, int idMeasure) {
@@ -796,7 +795,7 @@ public class PersonResource {
 	}
 
 	/**
-	 * This method compare a given date with date today
+	 * This method compares endDateGoal date with today
 	 * @param input
 	 * @return -1 if input before today, 0 if input equals today , 1 if input after today
 	 * @throws ParseException
@@ -810,7 +809,7 @@ public class PersonResource {
 	}
 	
 	/**
-	 * This method updateGoal for a specified person with idPerson	
+	 * This method updates a goal passed as param for a specified person with idPerson	
 	 * @param idPerson
 	 * @param goal
 	 * @return
@@ -829,9 +828,9 @@ public class PersonResource {
 	}
 	
 	/**
-	 * GET /person/{personId}/measure/{measureId}/check
+	 * GET /businessLogic-service/person/{idPerson}/measure/{idMeasure}/check
 	 *  
-	 * Check if the target is achieved for the measure passed as param
+	 * Check if the goal is achieved for the measure passed as param
 	 * @throws ParseException 
 	 * 
 	 */
@@ -884,26 +883,64 @@ public class PersonResource {
 	
 	
 	/**
-	 * GET /businessLogic-service/person/{idPerson}/comparison-value/{measureName} 
+	 * GET /businessLogic-service/person/{idPerson}/measure/{mid}/compare 
+	 * 
 	 * This method calls a getPerson method in Storage Services Module
 	 * @param idPerson
 	 * @param measureName
 	 * @return
 	 */
-	@GET
-	@Path("{pid}/comparison-value/{measureName}")
+	/*@GET
+	@Path("{pid}/measure/{mid}/comparison")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response comparisonValueOfMeasure(@PathParam("pid") int idPerson,
-			@PathParam("measureName") String measureName) {
+	public Boolean comparisonMeasureWithGoal(@PathParam("pid") int idPerson,
+			@PathParam("mid") int idMeasure) {
 		try {
 			System.out
-					.println("comparisonValueOfMeasure: Getting the result about the comparison of the value's "
-							+ measureName
-							+ " between goal and currentHealth for Person with "
-							+ idPerson
+					.println("comparisonMeasureWithGoal: Getting comparison of values between default goal and "
+							+ "measure with " + idMeasure + " for a Person with " + idPerson
 							+ " from Storage Services Module in Business Logic Services...");
 
+			Measure measure = getMeasureById(idPerson, idMeasure);
+			System.out.println(measure.toString());
+			
+			GoalList listGoals = readGoalListByMeasureName(idPerson, measure.getName()); 
+			for(Goal goal: listGoals.getGoalList()){
+				System.out.println(goal.toString());
+			}
+			
+			Boolean result = false;
+			
+			if(listGoals.getGoalList().size() > 0){
+				System.out.println("Size listGoals: " + listGoals.getGoalList().size());
+				
+				for(Goal goal : listGoals.getGoalList()){
+					//the value 0 if x == y; a value less than 0 if x < y; and a value greater than 0 if x > y
+					int count = Integer.compare(Integer.parseInt(measure.getValue()), Integer.parseInt(goal.getValue()));
+					System.out.println("Count: " + count);
+					
+					String cond = goal.getCondition().replaceAll("\\s","");
+					System.out.println("Condition: " + cond);
+					
+					//conditionGoal is set and the goal is not expired
+					if (goal.getCondition() != null && 
+							compareDateWithToday(goal.getEndDateGoal()) >= 0 &&
+							goal.isAchieved() == false) {
+						if( (cond.equals("<") && count <  0) || (cond.equals("<=") && count <= 0) ||
+							(cond.equals("=") && count == 0) || (cond.equals(">") && count > 0) ||
+							(cond.equals(">=") && count >= 0)){
+							//the goal is achieved
+							goal.setAchieved(true);
+							updateGoal(idPerson, goal);
+							result = true;
+						}else
+							result = false;
+					}
+				}
+			}
+			return result;
+			
 			String path = "/person/" + idPerson;
 
 			String xmlBuild = "";
@@ -1055,10 +1092,11 @@ public class PersonResource {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
 					.entity(errorMessage(e)).build();
 		}
-	}
+	}*/
 
 	/**
 	 * GET /businessLogic-service/person/{idPerson}/motivational-goal/{measureName} 
+	 * 
 	 * This method calls a getPerson method in Storage Services Module
 	 * @param idPerson
 	 * @param measureName
@@ -1161,6 +1199,7 @@ public class PersonResource {
 
 	/**
 	 * GET /businessLogic-service/person/{idPerson}/motivation-health/{measureName} 
+	 * 
 	 * This method calls a getPerson method in Storage Services Module
 	 * @param idPerson
 	 * @param measureName
