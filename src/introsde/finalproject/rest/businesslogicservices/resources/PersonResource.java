@@ -12,8 +12,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -757,10 +761,7 @@ public class PersonResource {
 	 * Return the measure with {idMeasure}
 	 * @return Measure a measure
 	 */
-	@GET
-	@Path("{pid}/measure/{mid}")
-	@Produces( MediaType.APPLICATION_JSON )
-	public Measure getMeasureById(@PathParam("pid") int idPerson, @PathParam("mid") int idMeasure) {
+	public Measure getMeasureById(int idPerson, int idMeasure) {
 		System.out.println("getMeasureById: Reading Measures for idPerson "+ idPerson +"...");
 		
 		String path = "/person/" + idPerson + "/historyHealth";
@@ -787,7 +788,7 @@ public class PersonResource {
 		for(int i=0; i<measureList.size(); i++){
 			Measure m = measureList.get(i);
 			if(m.getMid() == idMeasure){
-				System.out.println("Measure: " + m.toString());
+				System.out.println("getMeasureById():\n" + m.toString());
 				return m;
 			}
 		}
@@ -795,38 +796,83 @@ public class PersonResource {
 	}
 
 	/**
+	 * This method compare a given date with date today
+	 * @param input
+	 * @return -1 if input before today, 0 if input equals today , 1 if input after today
+	 * @throws ParseException
+	 */
+	private int compareDateWithToday(String input) throws ParseException{
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = format.parse(input);
+		Date todayDate = Calendar.getInstance().getTime();
+		System.out.println("Compare date: " + input + " with today: " + todayDate + " = " + date.compareTo(todayDate));
+		return date.compareTo(todayDate);
+	}
+	
+	/**
+	 * This method updateGoal for a specified person with idPerson	
+	 * @param idPerson
+	 * @param goal
+	 * @return
+	 */
+	private Integer updateGoal(int idPerson, Goal goal){
+		System.out.println("updateGoal: Update goal "+ goal.getGid() +"...");
+		String path = "/person/" + idPerson + "/" + goal.getGid();
+
+		Client client = ClientBuilder.newClient(clientConfig);
+		WebTarget webTarget = client.target(storageServiceURL + path);
+		Builder builder = webTarget.request(mediaType);
+
+		Response response = builder.put(Entity.entity(goal, mediaType));
+		System.out.println("updateGoal():\n" + response);
+		return response.readEntity(Integer.class);		
+	}
+	
+	/**
 	 * GET /person/{personId}/measure/{measureId}/check
 	 *  
 	 * Check if the target is achieved for the measure passed as param
 	 * @throws ParseException 
 	 * 
 	 */
-	/*@GET
+	@GET
 	@Path("{pid}/measure/{mid}/check")
 	@Produces( MediaType.APPLICATION_JSON )
-	public Boolean checkMeasureWithTarget(@PathParam("pid") int idPerson, @PathParam("mid") int idMeasure) throws ParseException {
-		System.out.println("checkMeasureWithTarget: Checking measure "+ idMeasure +" for idPerson "+ idPerson +"...");
+	public Boolean checkMeasureWithGoal(@PathParam("pid") int idPerson, @PathParam("mid") int idMeasure) throws ParseException {
+		System.out.println("checkMeasureWithGoal: Checking measure "+ idMeasure +" for idPerson "+ idPerson +"...");
 		
 		Measure measure = getMeasureById(idPerson, idMeasure);
-		System.out.println(measure.toString());
+		System.out.println("Measure: \n" + measure.toString());
 		
 		GoalList listGoals = readGoalListByMeasureName(idPerson, measure.getName()); 
-				
+		System.out.println("ListGoal:");
+		for(Goal goal: listGoals.getGoalList()){
+			System.out.println(goal.toString());
+		}
+		
 		Boolean result = false;
+		
 		if(listGoals.getGoalList().size() > 0){
+			System.out.println("Lenght listGoals: " + listGoals.getGoalList().size());
+			
 			for(Goal goal : listGoals.getGoalList()){
+				//the value 0 if x == y; a value less than 0 if x < y; and a value greater than 0 if x > y
 				int count = Integer.compare(Integer.parseInt(measure.getValue()), Integer.parseInt(goal.getValue()));
+				System.out.println("Count: " + count);
+				
 				String cond = goal.getCondition().replaceAll("\\s","");
-				//conditionGoal is set and the target is not expired
+				System.out.println("Condition: " + cond);
+				
+				//conditionGoal is set and the goal is not expired
 				if (goal.getCondition() != null && 
 						compareDateWithToday(goal.getEndDateGoal()) >= 0 &&
 						goal.isAchieved() == false) {
 					if( (cond.equals("<") && count <  0) || (cond.equals("<=") && count <= 0) ||
 						(cond.equals("=") && count == 0) || (cond.equals(">") && count > 0) ||
 						(cond.equals(">=") && count >= 0)){
-						//the target is achieved
-						target.setAchieved(true);
-						updateTarget(target);
+						//the goal is achieved
+						goal.setAchieved(true);
+						updateGoal(idPerson, goal);
 						result = true;
 					}else
 						result = false;
@@ -834,7 +880,7 @@ public class PersonResource {
 			}
 		}
 		return result;
-	}*/
+	}
 	
 	
 	/**
