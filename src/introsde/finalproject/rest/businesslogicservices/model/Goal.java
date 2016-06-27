@@ -62,7 +62,7 @@ public class Goal {
 		this.endDateGoal = endDateGoal;
 	}
 
-	public Boolean getAchieved() {
+	public Boolean isAchieved() {
 		return achieved;
 	}
 
