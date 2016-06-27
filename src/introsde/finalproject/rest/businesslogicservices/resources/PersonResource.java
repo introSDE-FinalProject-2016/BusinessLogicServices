@@ -817,7 +817,7 @@ public class PersonResource {
 	 */
 	private Integer updateGoal(int idPerson, Goal goal){
 		System.out.println("updateGoal: Update goal "+ goal.getGid() +"...");
-		String path = "/person/" + idPerson + "/" + goal.getGid();
+		String path = "/person/" + idPerson + "/goal/" + goal.getGid();
 
 		Client client = ClientBuilder.newClient(clientConfig);
 		WebTarget webTarget = client.target(storageServiceURL + path);
