@@ -78,4 +78,9 @@ public class Goal {
 		this.condition = condition;
 	}
 
+	public String toString() {
+		return "Goal ( " + gid + ", " + type + ", " + value + ", " 
+						 + startDateGoal + ", " + endDateGoal + ", "
+						 + achieved + ", " + condition + " )";
+	}
 }
