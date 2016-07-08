@@ -804,7 +804,7 @@ public class PersonResource {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = format.parse(input);
 		Date todayDate = Calendar.getInstance().getTime();
-		System.out.println("Compare date: " + input + " with today: " + todayDate + " = " + date.compareTo(todayDate));
+		System.out.println("Compare date: " + input + " with today: " + format.format(todayDate) + " = " + date.compareTo(todayDate));
 		return date.compareTo(todayDate);
 	}
 	
@@ -862,7 +862,7 @@ public class PersonResource {
 				String cond = goal.getCondition().replaceAll("\\s","");
 				System.out.println("Condition: " + cond);
 				
-				//conditionGoal is set and the goal is not expired (-1 if endDateGoal is before todayDate)
+				//conditionGoal is set and the goal is not expired (then if endDateGoal is before todayDate means that function return -1 and goal is expired)
 				if (goal.getCondition() != null && 
 						compareDateWithToday(goal.getEndDateGoal()) >= 0 &&
 						goal.isAchieved() == false) {
