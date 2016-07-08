@@ -797,7 +797,7 @@ public class PersonResource {
 	/**
 	 * This method compares endDateGoal date with today
 	 * @param input
-	 * @return -1 if input before today, 0 if input equals today , 1 if input after today
+	 * @return -1 if input before todayDate, 0 if input is equal to todayDate , 1 if input is after todayDate
 	 * @throws ParseException
 	 */
 	private int compareDateWithToday(String input) throws ParseException{
@@ -862,7 +862,7 @@ public class PersonResource {
 				String cond = goal.getCondition().replaceAll("\\s","");
 				System.out.println("Condition: " + cond);
 				
-				//conditionGoal is set and the goal is not expired
+				//conditionGoal is set and the goal is not expired (-1 if endDateGoal is before todayDate)
 				if (goal.getCondition() != null && 
 						compareDateWithToday(goal.getEndDateGoal()) >= 0 &&
 						goal.isAchieved() == false) {
